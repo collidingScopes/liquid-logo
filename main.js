@@ -9,6 +9,7 @@ Resize input image / canvas to be divisible by 4 pixels
 Add GUI toggle for canvas background color
 Add intro message / tips about what type of images to use (no background, minimal, etc.)
 Understand and improve edge interaction physics
+- remove sine wave glowing
 Project naming, about/footer div, github, project descriptions
 Improve project UI layout (demo buttons go above canvas rather than float?)
 */
@@ -48,9 +49,6 @@ function resizeAndCreateLogoTexture(originalImage) {
         targetHeight = Math.min(originalHeight, MAX_DIMENSION);
         targetWidth = Math.round(targetHeight * originalAspect);
     }
-    
-    // No rounding to divisible by 4 - it's causing problems
-    // Just use the exact calculated dimensions
     
     console.log(`Target dimensions: ${targetWidth}x${targetHeight}, resulting aspect: ${targetWidth/targetHeight}`);
     
@@ -246,6 +244,7 @@ function handleImageUpload(event) {
             // Update project name for video exports
             projectName = file.name.split('.')[0] || "custom-logo";
             
+            /*
             // Show success message
             const indicator = document.getElementById('play-pause-indicator');
             indicator.textContent = "Logo Uploaded & Canvas Resized!";
@@ -253,6 +252,7 @@ function handleImageUpload(event) {
             setTimeout(() => {
                 indicator.classList.remove('visible');
             }, 1500);
+            */
         };
         tempImage.src = e.target.result;
     };
@@ -272,6 +272,7 @@ function loadDemoLogo(logoName) {
         // Update project name for video exports
         projectName = logoName;
         
+        /*
         // Show success message
         const indicator = document.getElementById('play-pause-indicator');
         indicator.textContent = `Demo Logo: ${logoName} (Canvas Resized)`;
@@ -279,6 +280,7 @@ function loadDemoLogo(logoName) {
         setTimeout(() => {
             indicator.classList.remove('visible');
         }, 1500);
+        */
     };
     
     tempImage.onerror = function() {

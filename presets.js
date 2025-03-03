@@ -110,4 +110,20 @@ const presets = {
         // Logo settings
         logoInteractStrength: 0.39,
     },
+    'Magic': {
+        speed: 0.96,
+        iterations: 8,
+        scale: 1.3,
+        dotFactor: 0.419,
+        dotMultiplier: 0.13,
+        vOffset: 6.9,
+        intensityFactor: 0.603,
+        expFactor: 1.6,
+        redFactor: -0.2,
+        greenFactor: 1.4,
+        blueFactor: -3.0,
+        colorShift: 1.0,
+        // Logo settings
+        logoInteractStrength: 0.52,
+    },
 };
