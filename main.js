@@ -4,8 +4,7 @@ Add more default logo examples
 Add UI buttons underneath canvas (dice, video record, etc)
 Improve default presets and display them better in the GUI
 Adjust randomize input ranges for better results on average
-Improve image resize function so that logo is always at 80% of canvas width?
-- Instead, just resize entire canvas to equal the logo (within some min-max bounds)
+Resize input image / canvas to be divisible by 4 pixels
 Add GUI toggle for canvas background color
 Add intro message / tips about what type of images to use (no background, minimal, etc.)
 Understand and improve edge interaction physics
@@ -20,53 +19,55 @@ let logoImage = null;
 let logoAspectRatio = 1.0;
 let gui; // Global reference to dat.gui instance
 
-// Function to resize an image and create a texture in one step
+// Function to resize an image and create a texture while preserving aspect ratio
 function resizeAndCreateLogoTexture(originalImage) {
-    // Create a temporary canvas for resizing
-    const canvas = document.createElement('canvas');
-    const ctx = canvas.getContext('2d');
+    // Get original dimensions and aspect ratio
+    const originalWidth = originalImage.width;
+    const originalHeight = originalImage.height;
+    const originalAspect = originalWidth / originalHeight;
     
-    // Get the main canvas dimensions for reference
-    const mainCanvasWidth = gl.canvas.width;
-    const mainCanvasHeight = gl.canvas.height;
-    
-    // Calculate target size based on main canvas dimensions
-    // Use the smaller dimension as reference to ensure logo fits
-    const maxSize = Math.min(mainCanvasWidth, mainCanvasHeight) * 0.8; // 80% of smaller dimension
-    
-    // Calculate new dimensions while preserving aspect ratio
-    const originalAspect = originalImage.width / originalImage.height;
-    let newWidth, newHeight;
-    
-    if (originalAspect > 1) {
-        // Logo is wider than tall
-        newWidth = maxSize;
-        newHeight = maxSize / originalAspect;
-    } else {
-        // Logo is taller than wide
-        newHeight = maxSize;
-        newWidth = maxSize * originalAspect;
-    }
-    
-    // Round dimensions to prevent blurry images
-    newWidth = Math.round(newWidth);
-    newHeight = Math.round(newHeight);
-    
-    // Set canvas size to the new dimensions
-    canvas.width = newWidth;
-    canvas.height = newHeight;
-    
-    // Draw the image at the new size
-    ctx.drawImage(originalImage, 0, 0, newWidth, newHeight);
-    
-    // Store the aspect ratio for the shader
+    // Store the original aspect ratio for the shader
     logoAspectRatio = originalAspect;
     
-    // Log dimensions for debugging
-    console.log(`Original image: ${originalImage.width}x${originalImage.height}, aspect: ${originalAspect}`);
-    console.log(`Resized to: ${newWidth}x${newHeight}, for canvas: ${mainCanvasWidth}x${mainCanvasHeight}`);
+    console.log(`Original image: ${originalWidth}x${originalHeight}, aspect ratio: ${originalAspect}`);
     
-    // Create texture directly from the canvas
+    // Set size constraints
+    const MAX_DIMENSION = 800;
+    
+    // Calculate target dimensions while preserving aspect ratio exactly
+    let targetWidth, targetHeight;
+    
+    if (originalWidth >= originalHeight) {
+        // Landscape orientation (width >= height)
+        targetWidth = Math.min(originalWidth, MAX_DIMENSION);
+        targetHeight = Math.round(targetWidth / originalAspect);
+    } else {
+        // Portrait orientation (height > width)
+        targetHeight = Math.min(originalHeight, MAX_DIMENSION);
+        targetWidth = Math.round(targetHeight * originalAspect);
+    }
+    
+    // No rounding to divisible by 4 - it's causing problems
+    // Just use the exact calculated dimensions
+    
+    console.log(`Target dimensions: ${targetWidth}x${targetHeight}, resulting aspect: ${targetWidth/targetHeight}`);
+    
+    // Set canvas size to exactly match these dimensions
+    canvas.width = targetWidth;
+    canvas.height = targetHeight;
+    gl.viewport(0, 0, targetWidth, targetHeight);
+    
+    // Create a temporary canvas for resizing
+    const tempCanvas = document.createElement('canvas');
+    const ctx = tempCanvas.getContext('2d');
+    tempCanvas.width = targetWidth;
+    tempCanvas.height = targetHeight;
+    
+    // Clear and draw image at exact dimensions
+    ctx.clearRect(0, 0, targetWidth, targetHeight);
+    ctx.drawImage(originalImage, 0, 0, targetWidth, targetHeight);
+    
+    // Create WebGL texture
     if (!gl) return;
     
     // Delete existing texture if any
@@ -84,10 +85,10 @@ function resizeAndCreateLogoTexture(originalImage) {
     gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR);
     gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.LINEAR);
     
-    // Upload the canvas content directly into the texture
-    gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, canvas);
+    // Upload the canvas content to the texture
+    gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, tempCanvas);
     
-    // Add logo settings to GUI if not already added
+    // Add logo controls to GUI if needed
     if (!params.hasOwnProperty('logoInteractStrength') || !guiControllers.hasOwnProperty('logoInteractStrength')) {
         addLogoControlsToGUI();
     }
@@ -95,6 +96,11 @@ function resizeAndCreateLogoTexture(originalImage) {
 
 // Initialize the application
 async function init() {
+    // Initial canvas setup - this will be overridden when a logo is loaded
+    canvas.width = 800;
+    canvas.height = 800;
+    gl.viewport(0, 0, canvas.width, canvas.height);
+    
     // Initialize the shader program
     const shaderProgram = await initShaderProgram(gl);
     
@@ -160,6 +166,9 @@ function drawScene() {
     // Set background color to solid black
     gl.clearColor(0.0, 0.0, 0.0, 1.0);
     gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
+
+    // Always ensure viewport matches canvas size
+    gl.viewport(0, 0, canvas.width, canvas.height);
 
     // Ensure we're drawing on the full canvas by setting a black quad first
     gl.useProgram(programInfo.program);
@@ -231,9 +240,12 @@ function handleImageUpload(event) {
             // Resize and create texture in one step
             resizeAndCreateLogoTexture(tempImage);
             
+            // Update project name for video exports
+            projectName = file.name.split('.')[0] || "custom-logo";
+            
             // Show success message
             const indicator = document.getElementById('play-pause-indicator');
-            indicator.textContent = "Logo Uploaded and Resized!";
+            indicator.textContent = "Logo Uploaded & Canvas Resized!";
             indicator.classList.add('visible');
             setTimeout(() => {
                 indicator.classList.remove('visible');
@@ -254,9 +266,12 @@ function loadDemoLogo(logoName) {
         // Resize and create texture in one step
         resizeAndCreateLogoTexture(tempImage);
         
+        // Update project name for video exports
+        projectName = logoName;
+        
         // Show success message
         const indicator = document.getElementById('play-pause-indicator');
-        indicator.textContent = `Demo Logo: ${logoName} (Resized)`;
+        indicator.textContent = `Demo Logo: ${logoName} (Canvas Resized)`;
         indicator.classList.add('visible');
         setTimeout(() => {
             indicator.classList.remove('visible');

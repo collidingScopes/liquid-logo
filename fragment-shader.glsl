@@ -97,21 +97,17 @@ void main() {
     
     // Calculate UV coordinates for logo texture
     vec2 uv = FC.xy / r;
-    
-    // Center and scale logo - fix vertical flipping by inverting y
+
+    // Center logo based on scale factor
     vec2 logoUV = (uv - 0.5) / u_logoScale + 0.5;
-    logoUV.y = 1.0 - logoUV.y; // Fix vertical flip
-    
-    // Adjust for aspect ratio
-    float aspectAdjustment = r.x / r.y;
-    if (u_logoAspectRatio > 1.0) {
-        // Logo is wider than tall
-        logoUV.y = (logoUV.y - 0.5) * u_logoAspectRatio + 0.5;
-    } else {
-        // Logo is taller than wide
-        logoUV.x = (logoUV.x - 0.5) / u_logoAspectRatio + 0.5;
-    }
-    
+
+    // Fix vertical flip for texture
+    logoUV.y = 1.0 - logoUV.y;
+
+    // NO aspect ratio adjustment here - we're letting the canvas/texture 
+    // dimensions handle the aspect ratio correctly.
+    // By removing the aspect ratio correction, we prevent double-correction.
+
     // Sample logo texture
     vec4 logoColor = texture2D(u_logoTexture, logoUV);
     float logoAlpha = logoColor.a;
