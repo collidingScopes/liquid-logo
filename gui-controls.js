@@ -26,6 +26,8 @@ const params = {
     // Animation Settings
     speed: 2.2,
     iterations: 13,
+    // Presets
+    preset: 'Wisp',
     // Pattern Settings
     scale: 0.05,
     dotFactor: 0.1,
@@ -42,8 +44,7 @@ const params = {
     logoOpacity: 1.0,
     logoScale: 1.5,
     logoInteractStrength: 0.6,
-    // Presets
-    preset: 'Wisp',
+
     // Animation Control
     playing: true,
     randomizeInputs: function() {
@@ -69,9 +70,9 @@ function initGui() {
     
     // Create folders for organization
     const animationFolder = gui.addFolder('Animation');
+    const presetFolder = gui.addFolder('Presets');
     const patternFolder = gui.addFolder('Pattern');
     const colorFolder = gui.addFolder('Color');
-    const presetFolder = gui.addFolder('Presets');
     
     // Animation controls
     guiControllers.speed = animationFolder.add(params, 'speed', 0.1, 2.0).name('Speed');
@@ -80,6 +81,14 @@ function initGui() {
     animationFolder.add(params, 'saveImage').name('Save Image (s)');
     animationFolder.add(params, 'exportVideo').name('Record Video (v)');
     animationFolder.open();
+
+    // Presets dropdown
+    const presetNames = Object.keys(presets);
+    presetFolder.add(params, 'preset', presetNames).name('Load Preset')
+        .onChange(function(presetName) {
+            applyPreset(presetName);
+        });
+    presetFolder.open();
     
     // Pattern controls
     guiControllers.scale = patternFolder.add(params, 'scale', 0.02, 4.0).name('Pattern Scale');
@@ -97,13 +106,7 @@ function initGui() {
     guiControllers.colorShift = colorFolder.add(params, 'colorShift', 0.0, 2.0).step(0.1).name('Color Shift');
     colorFolder.open();
 
-    // Presets dropdown
-    const presetNames = Object.keys(presets);
-    presetFolder.add(params, 'preset', presetNames).name('Load Preset')
-        .onChange(function(presetName) {
-            applyPreset(presetName);
-        });
-        
+
     return gui;
 }
 

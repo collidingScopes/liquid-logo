@@ -9,6 +9,7 @@ Add GUI toggle for canvas background color
 Add intro message / tips about what type of images to use (no background, minimal, etc.)
 Understand and improve edge interaction physics
 Project naming, about/footer div, github, project descriptions
+Improve project UI layout (demo buttons go above canvas rather than float?)
 */
 
 // Global variables for WebGL

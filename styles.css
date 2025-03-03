@@ -91,12 +91,12 @@ input[type="file"] {
   background-color: #630940;
   color: #fff;
   font-weight: bold;
-  font-size: 1.2em;
+  font-size: 1.0em;
   font-family: Helvetica;
   display: inline-block;
   padding: 8px;
   cursor: pointer;
-  margin: 6px;
+  margin: 3px;
   transition: background-color 0.2s ease;
 }
 
@@ -125,7 +125,7 @@ input[type="file"] {
 /* Demo logo menu styling */
 #demo-logos-container {
   position: absolute;
-  bottom: 10px;
+  top: 10px;
   left: 10px;
   z-index: 100;
   display: flex;
