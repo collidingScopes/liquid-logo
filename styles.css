@@ -125,8 +125,8 @@ input[type="file"] {
 /* Demo logo menu styling */
 #demo-logos-container {
   position: absolute;
-  bottom: 20px;
-  left: 20px;
+  bottom: 10px;
+  left: 10px;
   z-index: 100;
   display: flex;
   flex-direction: column;

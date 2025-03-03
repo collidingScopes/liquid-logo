@@ -85,7 +85,7 @@ function initGui() {
     guiControllers.scale = patternFolder.add(params, 'scale', 0.02, 4.0).name('Pattern Scale');
     guiControllers.dotFactor = patternFolder.add(params, 'dotFactor', 0.1, 1.2).name('Dot Factor');
     guiControllers.dotMultiplier = patternFolder.add(params, 'dotMultiplier', 0.0, 2.0).name('Dot Multiplier');
-    guiControllers.vOffset = patternFolder.add(params, 'vOffset', 0.0, 10.0).name('Pattern Offset');
+    guiControllers.vOffset = patternFolder.add(params, 'vOffset', 0.0, 10.0).step(0.1).name('Pattern Offset');
     guiControllers.intensityFactor = patternFolder.add(params, 'intensityFactor', 0.05, 1.0).name('Intensity');
     guiControllers.expFactor = patternFolder.add(params, 'expFactor', 0.1, 10.0).name('Exp Factor');
     patternFolder.open();

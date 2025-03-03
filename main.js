@@ -1,3 +1,17 @@
+/*
+To do:
+Add more default logo examples
+Add UI buttons underneath canvas (dice, video record, etc)
+Improve default presets and display them better in the GUI
+Adjust randomize input ranges for better results on average
+Improve image resize function so that logo is always at 80% of canvas width?
+- Instead, just resize entire canvas to equal the logo (within some min-max bounds)
+Add GUI toggle for canvas background color
+Add intro message / tips about what type of images to use (no background, minimal, etc.)
+Understand and improve edge interaction physics
+Project naming, about/footer div, github, project descriptions
+*/
+
 // Global variables for WebGL
 let programInfo;
 let positionBuffer;
@@ -296,4 +310,4 @@ window.addEventListener('unload', () => {
 
 // Initialize the application when the page loads
 window.addEventListener('load', init);
-applyPreset("Wisp");
+applyPreset("Oil Slick");

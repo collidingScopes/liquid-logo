@@ -44,20 +44,21 @@ const presets = {
         // Logo settings
         logoInteractStrength: 0.9,
     },
-    'Horizon': {
-        speed: 0.7,
+    'Oil Slick': {
+        speed: 0.67,
         iterations: 8,
-        scale: 0.455,
-        dotFactor: 0.54,
-        vOffset: 1.5,
-        intensityFactor: 0.21,
-        expFactor: 6.2,
-        redFactor: 0.5,
-        greenFactor: 1.2,
-        blueFactor: 1.9,
-        colorShift: 0.8,
+        scale: 0.22,
+        dotFactor: 0.15,
+        dotMultiplier: 0.79,
+        vOffset: 6.3,
+        intensityFactor: 0.9,
+        expFactor: 2.8,
+        redFactor: -0.9,
+        greenFactor: -1.9,
+        blueFactor: -0.2,
+        colorShift: 0.6,
         // Logo settings
-        logoInteractStrength: 0.4,
+        logoInteractStrength: 0.35,
     },
     'Solar Flare': {
         speed: 2.2,
