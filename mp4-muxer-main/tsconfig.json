@@ -1,0 +1,14 @@
+{
+	"compilerOptions": {
+		"target": "ES2021",
+		"strict": true,
+		"strictNullChecks": false,
+		"noImplicitAny": true,
+		"noImplicitOverride": true,
+		"types": ["@types/wicg-file-system-access", "@types/dom-webcodecs"]
+	},
+	"include": [
+		"src/**/*",
+		"build/**/*.ts"
+	]
+}

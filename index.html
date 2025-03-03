@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Logo Animation Generator - GLSL Shader with WebGL</title>
+    <link rel="stylesheet" href="styles.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/dat-gui/0.7.9/dat.gui.min.js"></script>
+    <link href="https://db.onlinewebfonts.com/c/7075b714756224964d9338d625accc10?family=Kage+Retro" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" integrity="sha512-9usAa10IRO0HhonpyAIVpjrylPvoDwiPUiKdWk5t3PyolY1cOd4DSE0Ga+ri4AuTroPR5aQvXU9xC6qOPnzFeg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <meta property="og:title" content="Logo Animation Generator" />
+    <meta property="og:description" content="Transform logos into flowing particle animations" />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://particular-drift.netlify.app" />
+    <meta property="og:image" content="https://collidingscopes.github.io/particular-drift/assets/siteOGImage.png">
+    <meta property="og:image:type" content="image/png" >
+    <meta property="og:image:width" content="784" >
+    <meta property="og:image:height" content="784" >
+    <link rel="icon" href="assets/siteFavicon3.png">
+    <link rel="apple-touch-icon" href="assets/siteFavicon3.png">
+</head>
+<body>
+    <div class="canvasDiv">
+      <canvas id="canvas"></canvas>
+    </div>
+    <div id="play-pause-indicator">Paused</div>
+    <div id="videoRecordingMessageDiv" class="hidden sticky-top">
+      Video recording underway. Press menu button or "v" to stop. The video will save to your downloads folder after.
+    </div>
+    
+    <!-- Demo logos menu (directly in HTML) -->
+    <div id="demo-logos-container">
+      <div class="demo-logos-header">Try Demo Logos</div>
+      <div class="demo-logos-grid">
+        <div class="demo-logo-button" onclick="loadDemoLogo('apple')">Apple</div>
+        <div class="demo-logo-button" onclick="loadDemoLogo('nike')">Nike</div>
+        <div class="demo-logo-button" onclick="loadDemoLogo('github')">GitHub</div>
+        <label for="imageUpload" class="custom-file-upload">
+          <i class="fas fa-upload"></i> Upload Logo
+        </label>
+        <input type="file" id="imageUpload" accept="image/*" style="display: none;" />
+      </div>
+    </div>
+    
+    <!-- Introduction text for logo animation tool -->
+    <div id="intro-text" class="hidden">
+      <h2>Logo Animation Generator</h2>
+      <p>Upload your logo and watch it come alive with fluid animations!</p>
+      <p>Use the controls to customize how the animation interacts with your logo.</p>
+    </div>
+</body>
+
+<script src="shaders.js"></script>
+<script src="presets.js"></script>
+<script src="mp4-muxer-main/build/mp4-muxer.js"></script>
+<script src="canvasVideoExport.js"></script>
+<script src="gui-controls.js"></script>
+<script src="main.js"></script>
+
+</html>

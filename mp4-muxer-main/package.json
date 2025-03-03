@@ -1,0 +1,59 @@
+{
+  "name": "mp4-muxer",
+  "version": "4.3.3",
+  "description": "MP4 multiplexer in pure TypeScript with support for WebCodecs API, video & audio.",
+  "main": "./build/mp4-muxer.js",
+  "module": "./build/mp4-muxer.mjs",
+  "types": "./build/mp4-muxer.d.ts",
+  "exports": {
+    "types": "./build/mp4-muxer.d.ts",
+    "import": "./build/mp4-muxer.mjs",
+    "require": "./build/mp4-muxer.js"
+  },
+  "files": [
+    "README.md",
+    "package.json",
+    "LICENSE",
+    "build/mp4-muxer.js",
+    "build/mp4-muxer.mjs",
+    "build/mp4-muxer.d.ts"
+  ],
+  "scripts": {
+    "watch": "node build.mjs",
+    "check": "npx tsc --noEmit --skipLibCheck",
+    "lint": "npx eslint src demo build"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Vanilagy/mp4-muxer.git"
+  },
+  "author": "Vanilagy",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/Vanilagy/mp4-muxer/issues"
+  },
+  "homepage": "https://github.com/Vanilagy/mp4-muxer#readme",
+  "dependencies": {
+    "@types/dom-webcodecs": "^0.1.6",
+    "@types/wicg-file-system-access": "^2020.9.5"
+  },
+  "devDependencies": {
+    "@types/node": "^18.15.0",
+    "@typescript-eslint/eslint-plugin": "^5.54.1",
+    "@typescript-eslint/parser": "^5.54.1",
+    "esbuild": "^0.17.11",
+    "eslint": "^8.36.0",
+    "typescript": "^4.9.5"
+  },
+  "keywords": [
+    "mp4",
+    "fmp4",
+    "muxer",
+    "muxing",
+    "multiplexer",
+    "video",
+    "audio",
+    "media",
+    "webcodecs"
+  ]
+}

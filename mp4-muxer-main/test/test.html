@@ -1,0 +1,121 @@
+<script src="../build/mp4-muxer.js"></script>
+
+<script type="module">
+	const width = 1280;
+	const height = 720;
+	const sampleRate = 44100;
+	const numberOfChannels = 1;
+
+	let fileHandle = await new Promise(resolve => {
+		window.addEventListener('click', async () => {
+			let fileHandle = await window.showSaveFilePicker({
+				startIn: 'videos',
+				suggestedName: `video.mp4`,
+				types: [{
+					description: 'Video File',
+					accept: {'video/mp4' :['.mp4']}
+				}],
+			});
+			resolve(fileHandle);
+		}, { once: true });
+	});
+	let fileWritableStream = await fileHandle.createWritable();
+
+	let buf = new Uint8Array(2**24);
+	let maxPos = 0;
+
+	let muxer = new Mp4Muxer.Muxer({
+		//target: new Mp4Muxer.FileSystemWritableFileStreamTarget(fileWritableStream),
+		target: new Mp4Muxer.ArrayBufferTarget(),
+		
+		video: {
+			codec: 'avc',
+			width,
+			height
+		},
+		audio: {
+			codec: 'aac',
+			numberOfChannels,
+			sampleRate
+		},
+
+		fastStart: false
+	});
+
+	let canvas = document.createElement('canvas');
+	canvas.width = width;
+	canvas.height = height;
+	let ctx = canvas.getContext('2d');
+
+	let videoEncoder = new VideoEncoder({
+		output: (chunk, meta) => {
+			//console.log(chunk, meta);
+			muxer.addVideoChunk(chunk, meta);
+		},
+		error: (e) => console.error(e)
+	});
+	videoEncoder.configure({
+		codec: 'avc1.640028',
+		width: width,
+		height: height,
+		bitrate: 1e6,
+		framerate: 10
+	});
+
+	let audioEncoder = new AudioEncoder({
+		output: (chunk, meta) => {
+			//console.log(chunk, meta);
+			muxer.addAudioChunk(chunk, meta);
+		},
+		error: (e) => console.error(e)
+	});
+	audioEncoder.configure({
+		codec: 'mp4a.40.2',
+		sampleRate,
+		numberOfChannels,
+		bitrate: 128000,
+	});
+
+	for (let i = 0; i < 100; i++) {
+		ctx.fillStyle = ['red', 'lime', 'blue', 'yellow'][Math.floor(Math.random() * 4)];
+		ctx.fillRect(Math.random() * width, Math.random() * height, Math.random() * width, Math.random() * height);
+
+		let frame = new VideoFrame(canvas, { timestamp: 100000 * i });
+		videoEncoder.encode(frame);
+	}
+
+	let audioContext = new AudioContext();
+	let audioBuffer = await audioContext.decodeAudioData(await (await fetch('./CantinaBand60.wav')).arrayBuffer());
+	let length = 10;
+	let data = new Float32Array(length * numberOfChannels * sampleRate);
+	data.set(audioBuffer.getChannelData(0).subarray(0, data.length), 0);
+	//data.set(audioBuffer.getChannelData(0).subarray(0, data.length/2), data.length/2);
+
+	let audioData = new AudioData({
+		format: 'f32-planar',
+		sampleRate,
+		numberOfFrames: length * sampleRate,
+		numberOfChannels,
+		timestamp: 0,
+		data
+	});
+	audioEncoder.encode(audioData);
+	audioData.close();
+
+	await videoEncoder.flush();
+	await audioEncoder.flush();
+
+	muxer.finalize();
+	let buffer = muxer.target.buffer;
+	console.log(buffer);
+
+	await fileWritableStream.close();
+
+	function download(blob, filename) {
+		const a = document.createElement('a');
+		a.href = URL.createObjectURL(blob);
+		a.download = filename;
+		a.click();
+	}
+	download(new Blob([buffer]), 't.mp4');
+</script>
