@@ -2,6 +2,7 @@
 To do:
 Add more default logo examples
 Add UI buttons underneath canvas (dice, video record, etc)
+Clean up / re-order dat.GUI
 Improve default presets and display them better in the GUI
 Adjust randomize input ranges for better results on average
 Resize input image / canvas to be divisible by 4 pixels
@@ -147,6 +148,7 @@ async function init() {
     
     // Initialize GUI
     gui = initGui();
+    gui.close();
     
     // Setup image upload handler
     document.getElementById('imageUpload').addEventListener('change', handleImageUpload);
@@ -326,4 +328,4 @@ window.addEventListener('unload', () => {
 
 // Initialize the application when the page loads
 window.addEventListener('load', init);
-applyPreset("Oil Slick");
+applyPreset("Liquid");

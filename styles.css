@@ -46,7 +46,7 @@ html, body{
 
 .canvasDiv {
   display: flex;
-  margin-top: 2vh;
+  margin-top: 3vh;
   text-align: center;
   width: 98vw;
 }
@@ -124,14 +124,15 @@ input[type="file"] {
 
 /* Demo logo menu styling */
 #demo-logos-container {
-  position: absolute;
-  top: 10px;
-  left: 10px;
-  z-index: 100;
+  /* position: absolute; */
+  /* top: 10px; */
+  /* left: 10px; */
+  /* z-index: 100; */
   display: flex;
   flex-direction: column;
   background: rgba(0, 0, 0, 0.7);
   padding: 10px;
+  margin: 10px;
   border-radius: 5px;
 }
 
@@ -149,7 +150,8 @@ input[type="file"] {
 
 .demo-logo-button {
   padding: 8px;
-  background-color: #630940;
+  /* background-color: #630940; */
+  background-color: #091863;
   color: white;
   border-radius: 4px;
   cursor: pointer;
@@ -159,7 +161,8 @@ input[type="file"] {
 }
 
 .demo-logo-button:hover {
-  background-color: #cb0b81;
+  /* background-color: #cb0b81; */
+  background-color: #2138ae;
 }
 
 /* Intro text styling */

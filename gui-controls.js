@@ -27,7 +27,7 @@ const params = {
     speed: 2.2,
     iterations: 13,
     // Presets
-    preset: 'Wisp',
+    preset: 'Liquid',
     // Pattern Settings
     scale: 0.05,
     dotFactor: 0.1,
@@ -105,7 +105,6 @@ function initGui() {
     guiControllers.blueFactor = colorFolder.add(params, 'blueFactor', -3.0, 3.0).step(0.1).name('Blue Component');
     guiControllers.colorShift = colorFolder.add(params, 'colorShift', 0.0, 2.0).step(0.1).name('Color Shift');
     colorFolder.open();
-
 
     return gui;
 }
