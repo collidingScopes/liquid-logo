@@ -6,6 +6,79 @@ let logoImage = null;
 let logoAspectRatio = 1.0;
 let gui; // Global reference to dat.gui instance
 
+// Function to resize an image and create a texture in one step
+function resizeAndCreateLogoTexture(originalImage) {
+    // Create a temporary canvas for resizing
+    const canvas = document.createElement('canvas');
+    const ctx = canvas.getContext('2d');
+    
+    // Get the main canvas dimensions for reference
+    const mainCanvasWidth = gl.canvas.width;
+    const mainCanvasHeight = gl.canvas.height;
+    
+    // Calculate target size based on main canvas dimensions
+    // Use the smaller dimension as reference to ensure logo fits
+    const maxSize = Math.min(mainCanvasWidth, mainCanvasHeight) * 0.8; // 80% of smaller dimension
+    
+    // Calculate new dimensions while preserving aspect ratio
+    const originalAspect = originalImage.width / originalImage.height;
+    let newWidth, newHeight;
+    
+    if (originalAspect > 1) {
+        // Logo is wider than tall
+        newWidth = maxSize;
+        newHeight = maxSize / originalAspect;
+    } else {
+        // Logo is taller than wide
+        newHeight = maxSize;
+        newWidth = maxSize * originalAspect;
+    }
+    
+    // Round dimensions to prevent blurry images
+    newWidth = Math.round(newWidth);
+    newHeight = Math.round(newHeight);
+    
+    // Set canvas size to the new dimensions
+    canvas.width = newWidth;
+    canvas.height = newHeight;
+    
+    // Draw the image at the new size
+    ctx.drawImage(originalImage, 0, 0, newWidth, newHeight);
+    
+    // Store the aspect ratio for the shader
+    logoAspectRatio = originalAspect;
+    
+    // Log dimensions for debugging
+    console.log(`Original image: ${originalImage.width}x${originalImage.height}, aspect: ${originalAspect}`);
+    console.log(`Resized to: ${newWidth}x${newHeight}, for canvas: ${mainCanvasWidth}x${mainCanvasHeight}`);
+    
+    // Create texture directly from the canvas
+    if (!gl) return;
+    
+    // Delete existing texture if any
+    if (logoTexture) {
+        gl.deleteTexture(logoTexture);
+    }
+    
+    // Create new texture
+    logoTexture = gl.createTexture();
+    gl.bindTexture(gl.TEXTURE_2D, logoTexture);
+    
+    // Set texture parameters
+    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE);
+    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
+    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR);
+    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.LINEAR);
+    
+    // Upload the canvas content directly into the texture
+    gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, canvas);
+    
+    // Add logo settings to GUI if not already added
+    if (!params.hasOwnProperty('logoInteractStrength') || !guiControllers.hasOwnProperty('logoInteractStrength')) {
+        addLogoControlsToGUI();
+    }
+}
+
 // Initialize the application
 async function init() {
     // Initialize the shader program
@@ -139,21 +212,20 @@ function handleImageUpload(event) {
     const reader = new FileReader();
     reader.onload = function(e) {
         // Create an image element
-        logoImage = new Image();
-        logoImage.onload = function() {
-            // Create texture when image loads
-            logoAspectRatio = logoImage.width / logoImage.height;
-            createLogoTexture(logoImage);
+        const tempImage = new Image();
+        tempImage.onload = function() {
+            // Resize and create texture in one step
+            resizeAndCreateLogoTexture(tempImage);
             
             // Show success message
             const indicator = document.getElementById('play-pause-indicator');
-            indicator.textContent = "Logo Uploaded!";
+            indicator.textContent = "Logo Uploaded and Resized!";
             indicator.classList.add('visible');
             setTimeout(() => {
                 indicator.classList.remove('visible');
             }, 1500);
         };
-        logoImage.src = e.target.result;
+        tempImage.src = e.target.result;
     };
     reader.readAsDataURL(file);
 }
@@ -163,54 +235,25 @@ function loadDemoLogo(logoName) {
     const logoPath = `assets/${logoName}.png`;
     
     // Load the selected demo logo
-    const image = new Image();
-    image.onload = function() {
-        logoImage = image;
-        logoAspectRatio = image.width / image.height;
-        createLogoTexture(image);
+    const tempImage = new Image();
+    tempImage.onload = function() {
+        // Resize and create texture in one step
+        resizeAndCreateLogoTexture(tempImage);
         
         // Show success message
         const indicator = document.getElementById('play-pause-indicator');
-        indicator.textContent = `Demo Logo: ${logoName}`;
+        indicator.textContent = `Demo Logo: ${logoName} (Resized)`;
         indicator.classList.add('visible');
         setTimeout(() => {
             indicator.classList.remove('visible');
         }, 1500);
     };
     
-    image.onerror = function() {
+    tempImage.onerror = function() {
         console.error(`Failed to load demo logo: ${logoPath}`);
     };
     
-    image.src = logoPath;
-}
-
-// Create a WebGL texture from the logo image
-function createLogoTexture(image) {
-    if (!gl) return;
-    
-    // Delete existing texture if any
-    if (logoTexture) {
-        gl.deleteTexture(logoTexture);
-    }
-    
-    // Create new texture
-    logoTexture = gl.createTexture();
-    gl.bindTexture(gl.TEXTURE_2D, logoTexture);
-    
-    // Set texture parameters
-    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE);
-    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
-    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR);
-    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.LINEAR);
-    
-    // Upload the image into the texture
-    gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, image);
-    
-    // Add logo settings to GUI if not already added
-    if (!params.hasOwnProperty('logoInteractStrength') || !guiControllers.hasOwnProperty('logoInteractStrength')) {
-        addLogoControlsToGUI();
-    }
+    tempImage.src = logoPath;
 }
 
 // Add logo controls to the GUI
@@ -224,9 +267,9 @@ function addLogoControlsToGUI() {
 
 // Initialize logo parameters
 function initLogoParams() {
-    params.logoOpacity = 1.0;        // Fixed at 1.0 (fully visible)
-    params.logoScale = 1.5;          // Fixed at 1.5
-    params.logoInteractStrength = 0.6; // How much the animation interacts with logo edges
+    params.logoOpacity = 1.0;
+    params.logoScale = 1.0;
+    params.logoInteractStrength = 0.6;
 }
 
 // Save function for exporting image with logo
@@ -253,3 +296,4 @@ window.addEventListener('unload', () => {
 
 // Initialize the application when the page loads
 window.addEventListener('load', init);
+applyPreset("Wisp");

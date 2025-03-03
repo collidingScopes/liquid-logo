@@ -32,7 +32,7 @@ const params = {
     vOffset: 6.4,
     intensityFactor: 0.23,
     expFactor: 0.6,
-    dotMultiplier: 1.0,
+    dotMultiplier: 0.3,
     // Color Settings
     redFactor: 0.0,
     greenFactor: 0.0,
@@ -43,7 +43,7 @@ const params = {
     logoScale: 1.5,
     logoInteractStrength: 0.6,
     // Presets
-    preset: 'Liquid',
+    preset: 'Wisp',
     // Animation Control
     playing: true,
     randomizeInputs: function() {
@@ -74,7 +74,7 @@ function initGui() {
     const presetFolder = gui.addFolder('Presets');
     
     // Animation controls
-    guiControllers.speed = animationFolder.add(params, 'speed', 0.1, 3.0).name('Speed');
+    guiControllers.speed = animationFolder.add(params, 'speed', 0.1, 2.0).name('Speed');
     guiControllers.iterations = animationFolder.add(params, 'iterations', 3, 24).step(1).name('Iterations');
     animationFolder.add(params, 'randomizeInputs').name('Randomize Inputs (r)');
     animationFolder.add(params, 'saveImage').name('Save Image (s)');
@@ -174,15 +174,15 @@ function togglePlayPause() {
 // Update the randomize function to include logo parameters but not change logoScale
 function randomizeInputs() {
     // Animation parameters
-    params.speed = Math.random() * 2 + 0.1;
+    params.speed = Math.random() * 0.5 + 0.3;
     params.iterations = Math.ceil(Math.random() * 12 + 4); // 4 to 16
     
     // Pattern parameters
     params.scale = Math.random() * 4;
-    params.dotFactor = Math.random() * 1.1 + 0.1;
-    params.dotMultiplier = Math.random() * 2.0;
-    params.vOffset = Math.random() * 9.0 + 1.0; // 1.0 to 10.0
-    params.intensityFactor = Math.random() * 0.95 + 0.05; // 0.05 to 1.0
+    params.dotFactor = Math.random() * 1.0;
+    params.dotMultiplier = Math.random() * 1.0;
+    params.vOffset = Math.random() * 10.0;
+    params.intensityFactor = Math.random() * 1.0;
     params.expFactor = Math.random() * 10.0;
     
     // Color parameters
@@ -191,10 +191,7 @@ function randomizeInputs() {
     params.blueFactor = Math.random() * 4.0 - 2.0; // -2.0 to 2.0
     params.colorShift = Math.random(); // 0.0 to 1.0
     
-    // Logo parameters - only randomize interaction strength
-    if (params.hasOwnProperty('logoInteractStrength')) {
-        params.logoInteractStrength = Math.random(); // 0.0 to 1.0
-    }
+    params.logoInteractStrength = 0.3 + Math.random()*0.4; // 0.0 to 1.0
     
     // Update all UI controllers
     for (const key in guiControllers) {

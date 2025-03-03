@@ -1,16 +1,16 @@
 const presets = {
-    'Liquid': {
-        speed: 2.2,
-        iterations: 13,
-        scale: 0.05,
-        dotFactor: 0.1,
-        vOffset: 6.4,
-        intensityFactor: 0.23,
-        expFactor: 0.6,
-        redFactor: 0,
-        greenFactor: 0,
-        blueFactor: 0,
-        colorShift: 1.0,
+    'Wisp': {
+        speed: 0.7,
+        iterations: 11,
+        scale: 0.112,
+        dotFactor: 0.28,
+        vOffset: 0.0,
+        intensityFactor: 1.0,
+        expFactor: 4.73,
+        redFactor: 1.5,
+        greenFactor: 1.1,
+        blueFactor: 1.0,
+        colorShift: 0.8,
         // Logo settings
         logoInteractStrength: 0.5,
     },
@@ -104,73 +104,19 @@ const presets = {
         // Logo settings
         logoInteractStrength: 0.8,
     },
-    'Knot': {
-        speed: 2.3,
-        iterations: 4,
-        scale: 0.04,
-        dotFactor: 0.31,
-        vOffset: 1.14,
-        intensityFactor: 0.08,
-        expFactor: 3.7,
-        redFactor: 0.3,
-        greenFactor: 0.0,
-        blueFactor: 0.1,
+    'Rainbow': {
+        speed: 0.5,
+        iterations: 11,
+        scale: 0.402,
+        dotFactor: 1.17,
+        vOffset: 6.0,
+        intensityFactor: 0.18,
+        expFactor: 2.59,
+        redFactor: -1.3,
+        greenFactor: 1.5,
+        blueFactor: 0.6,
         colorShift: 0,
         // Logo settings
-        logoInteractStrength: 0.4,
+        logoInteractStrength: 0.64,
     }
 };
-
-// Create a default logo for users who haven't uploaded one
-function createDefaultLogo() {
-    // Create a canvas to generate the default logo
-    const logoCanvas = document.createElement('canvas');
-    logoCanvas.width = 512;
-    logoCanvas.height = 512;
-    
-    const ctx = logoCanvas.getContext('2d');
-    
-    // Fill with transparent background
-    ctx.clearRect(0, 0, logoCanvas.width, logoCanvas.height);
-    
-    // Draw a simple placeholder logo
-    const centerX = logoCanvas.width / 2;
-    const centerY = logoCanvas.height / 2;
-    const radius = 120;
-    
-    // Outer circle
-    ctx.beginPath();
-    ctx.arc(centerX, centerY, radius, 0, 2 * Math.PI);
-    ctx.fillStyle = 'rgba(255, 255, 255, 0.8)';
-    ctx.fill();
-    
-    // Inner circle
-    ctx.beginPath();
-    ctx.arc(centerX, centerY, radius * 0.7, 0, 2 * Math.PI);
-    ctx.fillStyle = 'rgba(50, 50, 50, 0.9)';
-    ctx.fill();
-    
-    // Text
-    ctx.font = 'bold 32px Arial';
-    ctx.fillStyle = 'white';
-    ctx.textAlign = 'center';
-    ctx.textBaseline = 'middle';
-    ctx.fillText('YOUR', centerX, centerY - 20);
-    ctx.fillText('LOGO', centerX, centerY + 20);
-    
-    // Convert canvas to image
-    const image = new Image();
-    image.onload = function() {
-        logoImage = image;
-        logoAspectRatio = 1.0; // Default logo is square
-        createLogoTexture(image);
-    };
-    
-    image.src = logoCanvas.toDataURL('image/png');
-}
-
-// Call this function after initializing WebGL
-function initDefaultLogo() {
-    // Wait until the page is fully loaded before creating default logo
-    window.setTimeout(createDefaultLogo, 500);
-}
