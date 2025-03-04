@@ -50,6 +50,15 @@ html, body{
   /* max-height: calc(100vh - 80px); */
 }
 
+.example-img {
+  margin: 0 auto;
+  text-align: center;
+  max-width: 50%;
+  margin-top: 10px;
+  margin-bottom: 10px;
+  box-shadow: 0 0 10px rgba(255, 255, 255, 0.3);
+}
+
 .menuButton {
   padding: 0px 2px 2px 2px;
   font-weight: bold;
