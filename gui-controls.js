@@ -1,6 +1,6 @@
 // Store all controllers for updating later
 let guiControllers = {};
-let defaultPreset = "Magic";
+let defaultPreset = "Galaxy";
 
 // Default parameters
 const params = {

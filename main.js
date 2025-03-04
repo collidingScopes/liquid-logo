@@ -3,7 +3,6 @@ To do:
 Add UI buttons underneath canvas (dice, video record, etc)
 Clean up / re-order dat.GUI
 Improve default presets and display them better in the GUI
-Adjust randomize input ranges for better results on average
 Add GUI toggle for canvas background color
 Add intro message / tips about what type of images to use (no background, minimal, etc.)
 Project naming, about/footer div, github, project descriptions
