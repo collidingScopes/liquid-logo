@@ -227,7 +227,7 @@ input[type="file"] {
 
 #siteNameText{
   font-size: 42px;
-  font-family: "Permanent Marker";
+  font-family: "Kage Retro";
   font-weight: 400;
   font-style: normal;
   display:block;
@@ -235,7 +235,7 @@ input[type="file"] {
 
 #subtitleText{
   font-size: 24px;
-  font-family: "Permanent Marker";
+  font-family: "Helvetica";
   font-weight: 400;
   font-style: normal;
   font-style: italic;
@@ -243,10 +243,10 @@ input[type="file"] {
 }
 
 #aboutText{
-  font-size: 45px;
-  font-family: "Retronoid";
-  font-weight: 400;
-  font-style: normal;
+  font-size: 52px;
+  font-family: "Kage Retro", "Helvetica";
+  /* font-weight: 400; */
+  /* font-style: normal; */
   display:block;
   padding: 0;
   margin: 0;
