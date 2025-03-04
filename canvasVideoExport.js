@@ -1,4 +1,4 @@
-let projectName = "eclipse"; //to be updated
+let projectName = "liquid-logo"; //to be updated
 
 //detect user browser
 var ua = navigator.userAgent;

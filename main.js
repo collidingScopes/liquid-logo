@@ -4,7 +4,6 @@ Add UI buttons underneath canvas (dice, video record, etc)
 Clean up / re-order dat.GUI
 Improve default presets and display them better in the GUI
 Adjust randomize input ranges for better results on average
-Resize input image / canvas to be divisible by 4 pixels
 Add GUI toggle for canvas background color
 Add intro message / tips about what type of images to use (no background, minimal, etc.)
 Project naming, about/footer div, github, project descriptions
@@ -20,7 +19,8 @@ let logoImage = null;
 let logoAspectRatio = 1.0;
 let gui;
 
-const MAX_DIMENSION = Math.min(1200, window.innerWidth);
+//const MAX_DIMENSION = Math.min(1200, window.innerWidth);
+const MAX_DIMENSION = 1200;
 
 // Set up canvas and WebGL context
 const canvas = document.getElementById('canvas');
@@ -64,6 +64,14 @@ function resizeAndCreateLogoTexture(originalImage) {
         targetHeight = Math.min(originalHeight, MAX_DIMENSION);
         targetWidth = Math.round(targetHeight * originalAspect);
     }
+
+    // Adjust dimensions to be divisible by 4
+    targetWidth = Math.floor(targetWidth / 4) * 4;
+    targetHeight = Math.floor(targetHeight / 4) * 4;
+    
+    // Make sure we have at least 4x4 pixels
+    targetWidth = Math.max(targetWidth, 4);
+    targetHeight = Math.max(targetHeight, 4);
     
     console.log(`Target dimensions: ${targetWidth}x${targetHeight}, resulting aspect: ${targetWidth/targetHeight}`);
     
@@ -254,10 +262,6 @@ function handleImageUpload(event) {
         tempImage.onload = function() {
             // Resize and create texture in one step
             resizeAndCreateLogoTexture(tempImage);
-            
-            // Update project name for video exports
-            projectName = file.name.split('.')[0] || "custom-logo";
-
         };
         tempImage.src = e.target.result;
     };
@@ -273,10 +277,6 @@ function loadDemoLogo(logoName) {
     tempImage.onload = function() {
         // Resize and create texture in one step
         resizeAndCreateLogoTexture(tempImage);
-        
-        // Update project name for video exports
-        projectName = logoName;
-
     };
     
     tempImage.onerror = function() {

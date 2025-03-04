@@ -55,8 +55,8 @@ html, body{
   margin: 0 auto;
   padding: 0;
   /* background: rgb(0, 0, 0); */
-  /* box-shadow: 0 0 10px rgba(255, 255, 255, 0.3); */
-  /* max-width: calc(100vw - 20px); */
+  box-shadow: 0 0 10px rgba(255, 255, 255, 0.3);
+  max-width: calc(90vw - 10px);
   /* max-height: calc(100vh - 80px); */
 }
 
