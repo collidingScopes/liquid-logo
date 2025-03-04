@@ -7,6 +7,7 @@ html, body{
   background-color: #000000;
   width: 100%;
   overflow-x: hidden;
+  display: block;
 }
 
 #gui {
@@ -18,12 +19,18 @@ html, body{
   margin: 0;
   z-index: 10;
   float: right;
+  margin-right: 0 !important;
+}
+
+.dg {
+  margin-right: 0 !important;
 }
 
 .close-button {
   font-size: 1.2em;
   font-weight: bold;
   background-color: #630940 !important;
+  margin-right: 0 !important;
 }
 
 .canvasDiv {
@@ -36,6 +43,7 @@ html, body{
 #canvas {
   margin: 0 auto;
   padding: 0;
+  /* border: 1px solid gray; */
   /* background: rgb(0, 0, 0); */
   box-shadow: 0 0 10px rgba(255, 255, 255, 0.3);
   max-width: calc(90vw - 10px);
@@ -55,6 +63,40 @@ html, body{
 
 .menuButton:hover {
   background-color: #cb0b81;
+}
+
+.gui-button {
+  padding: 12px 12px;
+  background-color: transparent;
+  border: 2px solid #6f9fff;
+  color: #6f9fff;
+  cursor: pointer;
+  font-family: 'Courier New', monospace;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  transition: all 0.2s ease;
+  box-shadow: 0 0 10px rgba(111, 159, 255, 0.2);
+  font-size: 1em;
+}
+
+.icon {
+  padding: 3.5px;
+  margin: 8px 2px 8px 2px;
+  font-size: 1.6em;
+}
+
+.gui-button:hover {
+  background-color: rgba(18, 72, 181, 0.5);
+  box-shadow: 0 0 15px rgba(111, 159, 255, 0.4);
+}
+
+.file-input-container {
+  position: relative;
+  margin: 20px;
+}
+
+#fileInput {
+  display: none;
 }
 
 .hidden {
@@ -112,30 +154,35 @@ input[type="file"] {
   /* z-index: 100; */
   display: flex;
   flex-direction: column;
-  background: rgba(11, 5, 28, 0.4);
+  /* background: rgb(8, 3, 81); */
+  background: #103379;
   padding: 10px;
   margin: 0 auto;
-  margin-top: 10px;
-  border-radius: 5px;
+  /* margin-top: 10px; */
+  margin-bottom: 10px;
+  box-shadow: 0 0 10px rgba(255, 255, 255, 0.3);
+  /* border-radius: 5px; */
   max-width: 600px;
+  font-family: 'Courier New', Courier, monospace;
 }
 
 .demo-logos-header {
   color: white;
   margin-bottom: 10px;
   font-weight: bold;
+  text-align: center;
 }
 
 .demo-logos-grid {
   display: grid;
-  grid-template-columns: repeat(2, 1fr);
+  grid-template-columns: repeat(3, 1fr);
   gap: 10px;
 }
 
 .demo-logo-button {
   padding: 8px;
   /* background-color: #630940; */
-  background-color: #091863;
+  background-color: #11848a;
   color: white;
   border-radius: 4px;
   cursor: pointer;
@@ -146,7 +193,7 @@ input[type="file"] {
 
 .demo-logo-button:hover {
   /* background-color: #cb0b81; */
-  background-color: #2138ae;
+  background-color: #14c0c9;
 }
 
 /* Intro text styling */
@@ -167,4 +214,120 @@ input[type="file"] {
 #intro-text h2 {
   margin-top: 0;
   color: #cb0b81;
+}
+
+#siteNameText{
+  font-size: 42px;
+  font-family: "Permanent Marker";
+  font-weight: 400;
+  font-style: normal;
+  display:block;
+}
+
+#subtitleText{
+  font-size: 24px;
+  font-family: "Permanent Marker";
+  font-weight: 400;
+  font-style: normal;
+  font-style: italic;
+  margin:0 auto;
+}
+
+#aboutText{
+  font-size: 45px;
+  font-family: "Retronoid";
+  font-weight: 400;
+  font-style: normal;
+  display:block;
+  padding: 0;
+  margin: 0;
+}
+
+#notesDiv{
+  width:100%;
+  box-sizing: border-box;
+  /*overflow: hidden;*/
+  padding: 10px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  /*border-top: 5px solid #581845;*/
+  background-color: #151632;
+  color: white;
+  font-family: Helvetica, Arial, sans-serif;
+}
+
+#textBox {
+  min-width: 350px;
+  max-width: 75vw;
+}
+
+#textBox > ul > li {
+  margin-bottom: 6px;
+}
+
+#linksDiv{
+  background-color: #faebf6;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+#buttonDiv {
+  display: inline block;
+  margin: 0 auto;
+  width: 100vw;
+  /* text-align: center; */
+}
+
+.x-link {
+  text-decoration: none;
+}
+
+h2 {
+  font-size: 40px;
+  font-family: Helvetica;
+}
+
+#buttonTable {
+  display: inline block;
+  margin: 0 auto;
+  /* width: 100vw; */
+  text-align: center;
+}
+
+.displayCanvas {
+  float: left;
+}
+
+/* Styling for table with github and social links */
+
+#infoMenuTable td {
+  text-align:center;
+  border: 0;
+  padding: 20px;
+}
+
+#infoMenuTable{
+  table-layout: fixed;
+  margin: 0px;
+}
+
+a, a:visited{
+  color:rgb(161, 50, 154);
+}
+
+.socialMediaButton{
+  color:rgb(161, 50, 154);
+  font-size: 26px;
+  margin: 0;
+  padding: 4px;
+  border: none;
+  max-width: 50px;
+  max-height: 50px;
+  background-color: transparent;
+}
+
+#buyMeACoffeeButton {
+  font-size: 10px;
 }

@@ -22,6 +22,12 @@ let gui;
 //const MAX_DIMENSION = Math.min(1200, window.innerWidth);
 const MAX_DIMENSION = 1200;
 
+// Animation state
+let animationFrameId;
+let startTime = Date.now();
+let pausedTime = 0;
+let currentTime = 0;
+
 // Set up canvas and WebGL context
 const canvas = document.getElementById('canvas');
 //const gl = canvas.getContext('webgl') || canvas.getContext('experimental-webgl');
@@ -165,7 +171,7 @@ async function init() {
     gui.close();
     
     // Setup image upload handler
-    document.getElementById('imageUpload').addEventListener('change', handleImageUpload);
+    document.getElementById('fileInput').addEventListener('change', handleImageUpload);
     
     // Load default logo
     loadDemoLogo('apple');
@@ -184,9 +190,9 @@ function drawScene() {
     //gl.clearColor(0.0, 0.0, 0.0, 1.0);
     //gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
 
-    bgColor = hexToRgb(params.backgroundColor);
-    gl.clearColor(bgColor.r / 255, bgColor.g / 255, bgColor.b / 255, 1.0);
-    gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
+    //bgColor = hexToRgb(params.backgroundColor);
+    //gl.clearColor(bgColor.r / 255, bgColor.g / 255, bgColor.b / 255, 1.0);
+    //gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
 
     // Always ensure viewport matches canvas size
     gl.viewport(0, 0, canvas.width, canvas.height);

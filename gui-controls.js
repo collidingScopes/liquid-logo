@@ -1,4 +1,3 @@
-// Store all controllers for updating later
 let guiControllers = {};
 let defaultPreset = "Galaxy";
 
@@ -7,7 +6,7 @@ const params = {
     // Animation Settings
     speed: 2.2,
     iterations: 13,
-    backgroundColor: "#000000",
+    //backgroundColor: "#000000",
     // Presets
     preset: defaultPreset,
     // Pattern Settings
@@ -30,36 +29,28 @@ const params = {
 
     // Animation Control
     playing: true,
-    randomizeInputs: function() {
-        randomizeInputs();
-    },
-    saveImage: function() {
-      saveImage();
-    },
-    exportVideo: function() {
-      toggleVideoRecord();
-    },
 };
-
-// Animation state
-let animationFrameId;
-let startTime = Date.now();
-let pausedTime = 0;
-let currentTime = 0;
 
 // Initialize dat.gui
 function initGui() {
     const gui = new dat.GUI({ width: 300 });
     
     // Create folders for organization
-    const animationFolder = gui.addFolder('Animation');
-    const presetFolder = gui.addFolder('Presets');
-    const patternFolder = gui.addFolder('Pattern');
+    const animationFolder = gui.addFolder('Animation Settings');
     const colorFolder = gui.addFolder('Color');
-    
-    // Animation controls
+    const logoFolder = gui.addFolder('Logo Settings');
+
+    // Animation Setting controls
+
+    const presetNames = Object.keys(presets);
+    animationFolder.add(params, 'preset', presetNames).name('Load Preset')
+        .onChange(function(presetName) {
+            applyPreset(presetName);
+        });
+
     guiControllers.speed = animationFolder.add(params, 'speed', 0.1, 2.0).name('Speed');
-    guiControllers.iterations = animationFolder.add(params, 'iterations', 3, 24).step(1).name('Iterations');
+    guiControllers.iterations = animationFolder.add(params, 'iterations', 3, 24).step(1).name('Color Smoothing');
+    /*
     guiControllers.backgroundColor = animationFolder.addColor(params, 'backgroundColor').name('Background Color')
     .onChange(function() {
         // This will trigger an immediate update when background color changes
@@ -71,25 +62,18 @@ function initGui() {
     animationFolder.add(params, 'randomizeInputs').name('Randomize Inputs (r)');
     animationFolder.add(params, 'saveImage').name('Save Image (s)');
     animationFolder.add(params, 'exportVideo').name('Record Video (v)');
-    animationFolder.open();
+    */
 
-    // Presets dropdown
-    const presetNames = Object.keys(presets);
-    presetFolder.add(params, 'preset', presetNames).name('Load Preset')
-        .onChange(function(presetName) {
-            applyPreset(presetName);
-        });
-    presetFolder.open();
-    
     // Pattern controls
-    guiControllers.scale = patternFolder.add(params, 'scale', 0.1, 4.0).step(0.01).name('Pattern Scale');
-    guiControllers.dotFactor = patternFolder.add(params, 'dotFactor', 0.1, 1.2).name('Dot Factor');
-    guiControllers.dotMultiplier = patternFolder.add(params, 'dotMultiplier', 0.0, 2.0).name('Dot Multiplier');
-    guiControllers.vOffset = patternFolder.add(params, 'vOffset', 0.0, 10.0).step(0.1).name('Pattern Offset');
-    guiControllers.intensityFactor = patternFolder.add(params, 'intensityFactor', 0.05, 1.0).name('Intensity');
-    guiControllers.expFactor = patternFolder.add(params, 'expFactor', 0.1, 10.0).name('Exp Factor');
-    guiControllers.noiseIntensity = patternFolder.add(params, 'noiseIntensity', 0.0, 10.0).step(0.1).name('Noise Intensity');
-    patternFolder.open();
+    guiControllers.noiseIntensity = animationFolder.add(params, 'noiseIntensity', 0.0, 10.0).step(0.1).name('Noise Intensity');
+    guiControllers.scale = animationFolder.add(params, 'scale', 0.1, 4.0).step(0.01).name('Pattern Scale');
+    guiControllers.dotFactor = animationFolder.add(params, 'dotFactor', 0.1, 1.2).name('Dot Factor');
+    guiControllers.dotMultiplier = animationFolder.add(params, 'dotMultiplier', 0.0, 2.0).name('Dot Multiplier');
+    guiControllers.vOffset = animationFolder.add(params, 'vOffset', 0.0, 10.0).step(0.1).name('Pattern Offset');
+    guiControllers.intensityFactor = animationFolder.add(params, 'intensityFactor', 0.05, 1.0).name('Intensity');
+    guiControllers.expFactor = animationFolder.add(params, 'expFactor', 0.1, 10.0).name('Exp Factor');
+
+    animationFolder.open();
 
     // Color controls
     guiControllers.redFactor = colorFolder.add(params, 'redFactor', -3.0, 3.0).step(0.1).name('Red Component');
@@ -99,7 +83,6 @@ function initGui() {
     colorFolder.open();
 
     // Add logo parameters to GUI
-    const logoFolder = gui.addFolder('Logo Settings');
     guiControllers.logoScale = logoFolder.add(params, 'logoScale', 0.5, 3.0).name('Logo Scale');
     guiControllers.logoInteractStrength = logoFolder.add(params, 'logoInteractStrength', 0.1, 0.7).step(0.01).name('Edge Interaction');
     logoFolder.open();
@@ -124,11 +107,8 @@ function applyPreset(presetName) {
         }
     });
     
-    // Always ensure fixed logoOpacity
     params.logoOpacity = 1.0;
-    
-    // Note: We're not resetting logoScale when a preset is applied
-    // so users can keep their preferred scale when switching presets
+    params.logoScale = 1.0;
 }
 
 // Create buffers for the quad (two triangles that cover the entire canvas)
@@ -166,7 +146,7 @@ function randomizeInputs() {
     // Animation parameters
     params.speed = Math.random() * 0.5 + 0.3;
     params.iterations = Math.ceil(Math.random() * 12 + 4); // 4 to 16
-    
+
     // Pattern parameters
     params.scale = Math.random() * 3.9 + 0.1;
     params.dotFactor = Math.random() * 1.0;
@@ -181,9 +161,10 @@ function randomizeInputs() {
     params.greenFactor = Math.random() * 4.0 - 2.0; // -2.0 to 2.0
     params.blueFactor = Math.random() * 4.0 - 2.0; // -2.0 to 2.0
     params.colorShift = Math.random(); // 0.0 to 1.0
-    
+
     params.logoInteractStrength = 0.3 + Math.random()*0.4; // 0.0 to 1.0
-    
+    params.logoOpacity = 1.0;
+
     // Update all UI controllers
     for (const key in guiControllers) {
         if (guiControllers[key]) {
@@ -215,3 +196,7 @@ window.addEventListener('keydown', (event) => {
       toggleVideoRecord();
     }
 });
+
+document.getElementById('randomizeBtn').addEventListener('click', () => randomizeInputs());
+document.getElementById('exportVideoBtn').addEventListener('click', () => toggleVideoRecord());
+document.getElementById('saveBtn').addEventListener('click', () => saveImage());
