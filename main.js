@@ -1,9 +1,8 @@
 /*
 To do:
 Add GUI toggle for canvas background color
-Project naming, about/footer div, github, project descriptions
-Mobile testing
-Meta OG properties and site OG image
+Ability to export with transparent background?
+Additional noise / distortion styles or parameters
 */
 
 // Global variables for WebGL
