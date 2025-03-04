@@ -9,6 +9,7 @@ Add intro message / tips about what type of images to use (no background, minima
 Project naming, about/footer div, github, project descriptions
 Improve project UI layout (demo buttons go above canvas rather than float?)
 Mobile testing
+Meta OG properties and site OG image
 */
 
 // Global variables for WebGL
@@ -34,7 +35,6 @@ const gl = canvas.getContext('webgl', {
     // premultipliedAlpha: false,
     powerPreference: "high-performance"
 });
-const playPauseIndicator = document.getElementById('play-pause-indicator');
 
 if (!gl) {
     alert('WebGL not supported in your browser');
@@ -255,17 +255,26 @@ function handleImageUpload(event) {
     const file = event.target.files[0];
     if (!file || !file.type.match('image.*')) return;
     
-    const reader = new FileReader();
-    reader.onload = function(e) {
-        // Create an image element
-        const tempImage = new Image();
-        tempImage.onload = function() {
-            // Resize and create texture in one step
-            resizeAndCreateLogoTexture(tempImage);
-        };
-        tempImage.src = e.target.result;
-    };
-    reader.readAsDataURL(file);
+    processLogoImage(file)
+        .then(processedCanvas => {
+            // Create a texture from the processed canvas with transparent background
+            resizeAndCreateLogoTexture(processedCanvas);
+        })
+        .catch(error => {
+            console.error("Error processing logo:", error);
+            
+            // Fallback to original method if background removal fails
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                const tempImage = new Image();
+                tempImage.onload = function() {
+                    // Use original image without background removal
+                    resizeAndCreateLogoTexture(tempImage);
+                };
+                tempImage.src = e.target.result;
+            };
+            reader.readAsDataURL(file);
+        });
 }
 
 // Function to load demo logos

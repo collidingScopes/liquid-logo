@@ -155,20 +155,10 @@ function togglePlayPause() {
     if (params.playing) {
         // Resuming playback
         startTime = Date.now() - pausedTime;
-        playPauseIndicator.textContent = "Playing";
     } else {
         // Pausing playback
         pausedTime = currentTime;
-        playPauseIndicator.textContent = "Paused";
     }
-    
-    // Show indicator
-    playPauseIndicator.classList.add('visible');
-    
-    // Hide indicator after 1.5 seconds
-    setTimeout(() => {
-        playPauseIndicator.classList.remove('visible');
-    }, 1500);
 }
 
 // Update the randomize function to include logo parameters but not change logoScale
@@ -215,15 +205,6 @@ window.addEventListener('keydown', (event) => {
 
     if (event.code === 'KeyR') {
       randomizeInputs();
-      
-      // Show indicator
-      playPauseIndicator.textContent = "Randomized";
-      playPauseIndicator.classList.add('visible');
-      
-      // Hide indicator after 1.5 seconds
-      setTimeout(() => {
-          playPauseIndicator.classList.remove('visible');
-      }, 1500);
     }
 
     if (event.code === 'KeyS') {
