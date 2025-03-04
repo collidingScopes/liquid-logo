@@ -1,6 +1,7 @@
 # Liquid Logo
 
 ![Liquid Logo](assets/siteOGImage4.png)
+![Liquid Logo gif](assets/playstation.gif)
 
 A free, open-source tool for creating animated logos using a liquid metal aesthetic. Transform static logos and images into flowing animations.
 
@@ -109,6 +110,6 @@ Feel free to reach out for questions, suggestions, or just to share what you've 
 
 ## Donations
 
-If you find this tool useful, consider supporting its development:
+If you found this tool useful, feel free to buy me a coffee. This would be much appreciated during late-night coding sessions!
 
 [![Buy Me A Coffee](https://www.buymeacoffee.com/assets/img/custom_images/yellow_img.png)](https://www.buymeacoffee.com/stereoDrift)
