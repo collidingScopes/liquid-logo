@@ -3,19 +3,19 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Logo Animation Generator - GLSL Shader with WebGL</title>
+    <title>Liquid Logo: free tool for animated logos</title>
     <link rel="stylesheet" href="styles.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/dat-gui/0.7.9/dat.gui.min.js"></script>
     <link href="https://db.onlinewebfonts.com/c/7075b714756224964d9338d625accc10?family=Kage+Retro" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" integrity="sha512-9usAa10IRO0HhonpyAIVpjrylPvoDwiPUiKdWk5t3PyolY1cOd4DSE0Ga+ri4AuTroPR5aQvXU9xC6qOPnzFeg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
-    <meta property="og:title" content="Logo Animation Generator" />
-    <meta property="og:description" content="Transform logos into flowing particle animations" />
+    <meta property="og:title" content="Liquid Logo" />
+    <meta property="og:description" content="Free tool for creating animated logos" />
     <meta property="og:type" content="website" />
-    <meta property="og:url" content="https://particular-drift.netlify.app" />
-    <meta property="og:image" content="https://collidingscopes.github.io/particular-drift/assets/siteOGImage.png">
+    <meta property="og:url" content="https://collidingscopes.github.io/liquid-logo" />
+    <meta property="og:image" content="https://collidingscopes.github.io/liquid-logo/assets/siteOGImage4.png">
     <meta property="og:image:type" content="image/png" >
-    <meta property="og:image:width" content="784" >
-    <meta property="og:image:height" content="784" >
+    <meta property="og:image:width" content="2506" >
+    <meta property="og:image:height" content="1476" >
     <link rel="icon" href="assets/siteFavicon3.png">
     <link rel="apple-touch-icon" href="assets/siteFavicon3.png">
 </head>
@@ -74,10 +74,11 @@
           <h2 id="aboutText">Liquid Logo</h2>
           <h3 id="subtitleText">Free tool for creating animated logos</h3>
 
-          <p>Turn images into synthwave / cyberpunk animations! Upload a photo, then use the controls to adjust the colors, speed, wave starting position / frequency, trail strength, turbulence, and more.</p>
+          <p>Turn your logo into a liquid metal animation! Upload a photo, then use the controls to adjust the colors, speed, noise intensity, animation pattern, and more.</p>
           <p>Click the 🎲 button underneath the canvas to randomize all input parameters, this can give interesting colour / movement styles. You can then open the controls at the top right of the screen to fine-tune the parameters one-by-one.</p>
-          <p>How this works: particle waves are created at one edge of the canvas, and then "scan" across the canvas while searching for edges of the input image. When an edge is found, some interaction physics that will cause particles to freeze position, change color, or move as an oscillating wave.</p>
           <p>This program tends to work best with input photos that are quite minimal (not too much noise or background objects, clean edges or silhouettes). Consider cropping your image or running a background removal before inputting into this tool -- this might help to pick out the key edges of your image.</p>
+          <p>How this works: this tool uses WebGL shaders to create a real-time animation that moves around the edges of your logo, creating a liquid-metal aesthetic.</p>
+          <p>You can use this to create stylized animated versions of your logo.</p>
           <p>You can export your creation as an image or video afterwards.</p>
           <p>A few hotkeys for the pros:</p>
           <ul>
@@ -91,10 +92,12 @@
           
           <a href="https://www.buymeacoffee.com/stereoDrift" target="_blank"><img src="https://www.buymeacoffee.com/assets/img/custom_images/yellow_img.png" alt="Buy Me A Coffee"></a>
 
+          <p>Enormous thanks and credit to XorDev on Twitter, whose <a href="https://x.com/XorDev/status/1894123951401378051" rel="noopener" target="_blank">shader work</a> served as a starting point for this tool.</p>
+
           <p>The code used to create the animation is quite resource-intensive, so it may run with some lag if your computer doesn't have enough computing power, too many tabs open, low battery, etc.</p>
           <p>If the video export feature does not work for you, please try a free screen-recording tool such as OBS Studio.</p>
 
-          <p>This project is coded using vanilla Javascript, HTML5 canvas, and CSS (<a href="https://github.com/collidingScopes/scanlines" target="_blank" rel="noopener">see github repo</a>). Video creation and encoding is done using mp4 muxer.</p>
+          <p>This project is coded using webgl shaders, vanilla Javascript, HTML5 canvas, and CSS (<a href="https://github.com/collidingScopes/scanlines" target="_blank" rel="noopener">see github repo</a>). Video creation and encoding is done using mp4 muxer.</p>
           <p>I do not have access to any images that you upload here, as all processing is done "client-side" (i.e., <b>no videos or images are saved/stored by me — they stay on your computer only</b>).</p>
           <p>If you enjoyed this, you may be interested in my other free / open source projects:</p>
           <ul>
