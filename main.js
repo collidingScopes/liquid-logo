@@ -1,6 +1,5 @@
 /*
 To do:
-Add more default logo examples
 Add UI buttons underneath canvas (dice, video record, etc)
 Clean up / re-order dat.GUI
 Improve default presets and display them better in the GUI
@@ -8,10 +7,9 @@ Adjust randomize input ranges for better results on average
 Resize input image / canvas to be divisible by 4 pixels
 Add GUI toggle for canvas background color
 Add intro message / tips about what type of images to use (no background, minimal, etc.)
-Understand and improve edge interaction physics
-- remove sine wave glowing
 Project naming, about/footer div, github, project descriptions
 Improve project UI layout (demo buttons go above canvas rather than float?)
+Why does canvas resize when page is resized? It should not
 */
 
 // Global variables for WebGL
@@ -21,6 +19,8 @@ let logoTexture = null;
 let logoImage = null;
 let logoAspectRatio = 1.0;
 let gui; // Global reference to dat.gui instance
+
+const MAX_DIMENSION = Math.min(700, window.innerWidth);
 
 // Function to resize an image and create a texture while preserving aspect ratio
 function resizeAndCreateLogoTexture(originalImage) {
@@ -33,10 +33,7 @@ function resizeAndCreateLogoTexture(originalImage) {
     logoAspectRatio = originalAspect;
     
     console.log(`Original image: ${originalWidth}x${originalHeight}, aspect ratio: ${originalAspect}`);
-    
-    // Set size constraints
-    const MAX_DIMENSION = 800;
-    
+        
     // Calculate target dimensions while preserving aspect ratio exactly
     let targetWidth, targetHeight;
     
@@ -88,10 +85,6 @@ function resizeAndCreateLogoTexture(originalImage) {
     // Upload the canvas content to the texture
     gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, tempCanvas);
     
-    // Add logo controls to GUI if needed
-    if (!params.hasOwnProperty('logoInteractStrength') || !guiControllers.hasOwnProperty('logoInteractStrength')) {
-        addLogoControlsToGUI();
-    }
 }
 
 // Initialize the application
@@ -128,6 +121,7 @@ async function init() {
             colorFactors: gl.getUniformLocation(shaderProgram, 'u_colorFactors'),
             colorShift: gl.getUniformLocation(shaderProgram, 'u_colorShift'),
             dotMultiplier: gl.getUniformLocation(shaderProgram, 'u_dotMultiplier'),
+            noiseIntensity: gl.getUniformLocation(shaderProgram, 'u_noiseIntensity'),
             // Logo-related uniforms
             logoTexture: gl.getUniformLocation(shaderProgram, 'u_logoTexture'),
             logoOpacity: gl.getUniformLocation(shaderProgram, 'u_logoOpacity'),
@@ -140,9 +134,6 @@ async function init() {
     
     // Initialize buffers
     positionBuffer = initBuffers(gl);
-    
-    // Initialize logo parameters
-    initLogoParams();
     
     // Initialize GUI
     gui = initGui();
@@ -200,7 +191,8 @@ function drawScene() {
                 params.redFactor, params.greenFactor, params.blueFactor);
     gl.uniform1f(programInfo.uniformLocations.colorShift, params.colorShift);
     gl.uniform1f(programInfo.uniformLocations.dotMultiplier, params.dotMultiplier);
-    
+    gl.uniform1f(programInfo.uniformLocations.noiseIntensity, params.noiseIntensity);
+
     // Handle logo texture and related uniforms
     if (logoTexture) {
         // Activate texture unit 0
@@ -243,16 +235,7 @@ function handleImageUpload(event) {
             
             // Update project name for video exports
             projectName = file.name.split('.')[0] || "custom-logo";
-            
-            /*
-            // Show success message
-            const indicator = document.getElementById('play-pause-indicator');
-            indicator.textContent = "Logo Uploaded & Canvas Resized!";
-            indicator.classList.add('visible');
-            setTimeout(() => {
-                indicator.classList.remove('visible');
-            }, 1500);
-            */
+
         };
         tempImage.src = e.target.result;
     };
@@ -271,16 +254,7 @@ function loadDemoLogo(logoName) {
         
         // Update project name for video exports
         projectName = logoName;
-        
-        /*
-        // Show success message
-        const indicator = document.getElementById('play-pause-indicator');
-        indicator.textContent = `Demo Logo: ${logoName} (Canvas Resized)`;
-        indicator.classList.add('visible');
-        setTimeout(() => {
-            indicator.classList.remove('visible');
-        }, 1500);
-        */
+
     };
     
     tempImage.onerror = function() {
@@ -288,22 +262,6 @@ function loadDemoLogo(logoName) {
     };
     
     tempImage.src = logoPath;
-}
-
-// Add logo controls to the GUI
-function addLogoControlsToGUI() {
-    // Add logo parameters to GUI
-    const logoFolder = gui.addFolder('Logo Settings');
-    guiControllers.logoScale = logoFolder.add(params, 'logoScale', 0.5, 3.0).name('Logo Scale');
-    guiControllers.logoInteractStrength = logoFolder.add(params, 'logoInteractStrength', 0.0, 1.0).name('Edge Interaction');
-    logoFolder.open();
-}
-
-// Initialize logo parameters
-function initLogoParams() {
-    params.logoOpacity = 1.0;
-    params.logoScale = 1.0;
-    params.logoInteractStrength = 0.6;
 }
 
 // Save function for exporting image with logo

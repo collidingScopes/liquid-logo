@@ -126,4 +126,20 @@ const presets = {
         // Logo settings
         logoInteractStrength: 0.52,
     },
+    'Dusk': {
+        speed: 0.45,
+        iterations: 15,
+        scale: 2.8,
+        dotFactor: 0.02,
+        dotMultiplier: 0.56,
+        vOffset: 6.1,
+        intensityFactor: 0.963,
+        expFactor: 0.5,
+        redFactor: 1.9,
+        greenFactor: 0.3,
+        blueFactor: 0.4,
+        colorShift: 0.9,
+        // Logo settings
+        logoInteractStrength: 0.52,
+    },
 };

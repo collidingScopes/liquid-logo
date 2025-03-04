@@ -35,6 +35,7 @@ const params = {
     intensityFactor: 0.23,
     expFactor: 0.6,
     dotMultiplier: 0.3,
+    noiseIntensity: 4.0,
     // Color Settings
     redFactor: 0.0,
     greenFactor: 0.0,
@@ -42,8 +43,8 @@ const params = {
     colorShift: 0.0,
     // Logo Settings (fixed values)
     logoOpacity: 1.0,
-    logoScale: 1.5,
-    logoInteractStrength: 0.6,
+    logoScale: 1.0,
+    logoInteractStrength: 0.4,
 
     // Animation Control
     playing: true,
@@ -91,12 +92,13 @@ function initGui() {
     presetFolder.open();
     
     // Pattern controls
-    guiControllers.scale = patternFolder.add(params, 'scale', 0.02, 4.0).name('Pattern Scale');
+    guiControllers.scale = patternFolder.add(params, 'scale', 0.1, 4.0).step(0.01).name('Pattern Scale');
     guiControllers.dotFactor = patternFolder.add(params, 'dotFactor', 0.1, 1.2).name('Dot Factor');
     guiControllers.dotMultiplier = patternFolder.add(params, 'dotMultiplier', 0.0, 2.0).name('Dot Multiplier');
     guiControllers.vOffset = patternFolder.add(params, 'vOffset', 0.0, 10.0).step(0.1).name('Pattern Offset');
     guiControllers.intensityFactor = patternFolder.add(params, 'intensityFactor', 0.05, 1.0).name('Intensity');
     guiControllers.expFactor = patternFolder.add(params, 'expFactor', 0.1, 10.0).name('Exp Factor');
+    guiControllers.noiseIntensity = patternFolder.add(params, 'noiseIntensity', 0.0, 10.0).step(0.1).name('Noise Intensity');
     patternFolder.open();
 
     // Color controls
@@ -105,6 +107,12 @@ function initGui() {
     guiControllers.blueFactor = colorFolder.add(params, 'blueFactor', -3.0, 3.0).step(0.1).name('Blue Component');
     guiControllers.colorShift = colorFolder.add(params, 'colorShift', 0.0, 2.0).step(0.1).name('Color Shift');
     colorFolder.open();
+
+    // Add logo parameters to GUI
+    const logoFolder = gui.addFolder('Logo Settings');
+    guiControllers.logoScale = logoFolder.add(params, 'logoScale', 0.5, 3.0).name('Logo Scale');
+    guiControllers.logoInteractStrength = logoFolder.add(params, 'logoInteractStrength', 0.1, 0.7).step(0.01).name('Edge Interaction');
+    logoFolder.open();
 
     return gui;
 }
@@ -180,13 +188,14 @@ function randomizeInputs() {
     params.iterations = Math.ceil(Math.random() * 12 + 4); // 4 to 16
     
     // Pattern parameters
-    params.scale = Math.random() * 4;
+    params.scale = Math.random() * 3.9 + 0.1;
     params.dotFactor = Math.random() * 1.0;
     params.dotMultiplier = Math.random() * 1.0;
     params.vOffset = Math.random() * 10.0;
     params.intensityFactor = Math.random() * 1.0;
     params.expFactor = Math.random() * 10.0;
-    
+    params.noiseIntensity = Math.random() * 10.0;
+
     // Color parameters
     params.redFactor = Math.random() * 4.0 - 2.0; // -2.0 to 2.0
     params.greenFactor = Math.random() * 4.0 - 2.0; // -2.0 to 2.0

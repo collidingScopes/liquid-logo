@@ -48,16 +48,16 @@ html, body{
   display: flex;
   margin-top: 3vh;
   text-align: center;
-  width: 98vw;
+  /* width: 98vw; */
 }
 
 #canvas {
   margin: 0 auto;
   padding: 0;
   background: rgb(0, 0, 0);
-  box-shadow: 0 0 10px rgba(255, 255, 255, 0.3);
-  max-width: calc(100vw - 20px);
-  max-height: calc(100vh - 80px);
+  /* box-shadow: 0 0 10px rgba(255, 255, 255, 0.3); */
+  /* max-width: calc(100vw - 20px); */
+  /* max-height: calc(100vh - 80px); */
 }
 
 .menuButton {
@@ -130,10 +130,12 @@ input[type="file"] {
   /* z-index: 100; */
   display: flex;
   flex-direction: column;
-  background: rgba(0, 0, 0, 0.7);
+  background: rgba(11, 5, 28, 0.4);
   padding: 10px;
-  margin: 10px;
+  margin: 0 auto;
+  margin-top: 10px;
   border-radius: 5px;
+  max-width: 600px;
 }
 
 .demo-logos-header {
