@@ -6,13 +6,13 @@ const presets = {
         dotFactor: 0.66,
         dotMultiplier: 0.36,
         vOffset: 6.0,
-        intensityFactor: 0.34,
+        intensityFactor: 0.1,
         expFactor: 8.9,
+        noiseIntensity: 0.5,
         redFactor: 0.2,
         greenFactor: 0.0,
         blueFactor: -0.2,
         colorShift: 0.5,
-        // Logo settings
         logoInteractStrength: 0.66,
     },
     'Wisp': {
@@ -27,7 +27,6 @@ const presets = {
         greenFactor: 1.1,
         blueFactor: 1.0,
         colorShift: 0.8,
-        // Logo settings
         logoInteractStrength: 0.5,
     },
     'Smoke': {
@@ -43,7 +42,6 @@ const presets = {
         greenFactor: -0.3,
         blueFactor: 0.1,
         colorShift: 0.0,
-        // Logo settings
         logoInteractStrength: 0.25,
     },
     'Oil Slick': {
@@ -59,7 +57,6 @@ const presets = {
         greenFactor: -1.9,
         blueFactor: -0.2,
         colorShift: 2.0,
-        // Logo settings
         logoInteractStrength: 0.35,
     },
     'Chrome': {
@@ -75,7 +72,6 @@ const presets = {
         greenFactor: 0.7,
         blueFactor: 0.9,
         colorShift: 0.9,
-        // Logo settings
         logoInteractStrength: 0.4,
     },
     'Rainbow': {
@@ -91,7 +87,6 @@ const presets = {
         greenFactor: 1.1,
         blueFactor: -1.7,
         colorShift: 0,
-        // Logo settings
         logoInteractStrength: 0.38,
     },
     'Liquid': {
@@ -107,24 +102,24 @@ const presets = {
         greenFactor: 0.6,
         blueFactor: 0.6,
         colorShift: 0.2,
-        // Logo settings
+        // Logo 
         logoInteractStrength: 0.39,
     },
     'Magic': {
-        speed: 0.96,
-        iterations: 8,
-        scale: 1.3,
-        dotFactor: 0.419,
-        dotMultiplier: 0.13,
-        vOffset: 6.9,
-        intensityFactor: 0.603,
-        expFactor: 1.6,
-        redFactor: -0.2,
-        greenFactor: 1.4,
-        blueFactor: -3.0,
-        colorShift: 1.0,
-        // Logo settings
-        logoInteractStrength: 0.52,
+        speed: 0.5,
+        iterations: 5,
+        scale: 1.05,
+        dotFactor: 0.269,
+        dotMultiplier: 0.79,
+        vOffset: 6.5,
+        intensityFactor: 0.315,
+        expFactor: 4.0,
+        noiseIntensity: 1.7,
+        redFactor: -0.1,
+        greenFactor: 1.9,
+        blueFactor: 0.2,
+        colorShift: 0.3,
+        logoInteractStrength: 0.5,
     },
     'Dusk': {
         speed: 0.45,
@@ -139,7 +134,6 @@ const presets = {
         greenFactor: 0.3,
         blueFactor: 0.4,
         colorShift: 0.9,
-        // Logo settings
         logoInteractStrength: 0.52,
     },
 };

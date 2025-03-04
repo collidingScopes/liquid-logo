@@ -9,7 +9,7 @@ Add GUI toggle for canvas background color
 Add intro message / tips about what type of images to use (no background, minimal, etc.)
 Project naming, about/footer div, github, project descriptions
 Improve project UI layout (demo buttons go above canvas rather than float?)
-Why does canvas resize when page is resized? It should not
+Mobile testing
 */
 
 // Global variables for WebGL
@@ -18,9 +18,27 @@ let positionBuffer;
 let logoTexture = null;
 let logoImage = null;
 let logoAspectRatio = 1.0;
-let gui; // Global reference to dat.gui instance
+let gui;
 
-const MAX_DIMENSION = Math.min(700, window.innerWidth);
+const MAX_DIMENSION = Math.min(1200, window.innerWidth);
+
+// Set up canvas and WebGL context
+const canvas = document.getElementById('canvas');
+//const gl = canvas.getContext('webgl') || canvas.getContext('experimental-webgl');
+const gl = canvas.getContext('webgl', { 
+    antialias: true,
+    alpha: true,
+    depth: false,
+    stencil: false,
+    preserveDrawingBuffer: true,
+    // premultipliedAlpha: false,
+    powerPreference: "high-performance"
+});
+const playPauseIndicator = document.getElementById('play-pause-indicator');
+
+if (!gl) {
+    alert('WebGL not supported in your browser');
+}
 
 // Function to resize an image and create a texture while preserving aspect ratio
 function resizeAndCreateLogoTexture(originalImage) {
@@ -156,7 +174,11 @@ function drawScene() {
     }
 
     // Set background color to solid black
-    gl.clearColor(0.0, 0.0, 0.0, 1.0);
+    //gl.clearColor(0.0, 0.0, 0.0, 1.0);
+    //gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
+
+    bgColor = hexToRgb(params.backgroundColor);
+    gl.clearColor(bgColor.r / 255, bgColor.g / 255, bgColor.b / 255, 1.0);
     gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
 
     // Always ensure viewport matches canvas size
@@ -286,6 +308,18 @@ window.addEventListener('unload', () => {
     }
 });
 
+function hexToRgb(hex) {
+    // Remove # if present
+    hex = hex.replace('#', '');
+    
+    // Parse the hex values
+    const r = parseInt(hex.substring(0, 2), 16);
+    const g = parseInt(hex.substring(2, 4), 16);
+    const b = parseInt(hex.substring(4, 6), 16);
+    
+    return { r, g, b };
+}
+
 // Initialize the application when the page loads
 window.addEventListener('load', init);
-applyPreset("Liquid");
+applyPreset(defaultPreset);

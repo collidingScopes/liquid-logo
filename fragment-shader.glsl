@@ -300,10 +300,12 @@ void main() {
             gl_FragColor = finalColor;
         } else {
             // Outside logo shape - transparent
-            gl_FragColor = vec4(0.0, 0.0, 0.0, 0.0);
+            //gl_FragColor = vec4(0.0, 0.0, 0.0, 0.0);
+            discard;
         }
     } else {
         // Completely outside logo bounds
-        gl_FragColor = vec4(0.0, 0.0, 0.0, 0.0);
+        //gl_FragColor = vec4(0.0, 0.0, 0.0, 0.0);
+        discard;
     }
 }

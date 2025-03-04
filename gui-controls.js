@@ -1,33 +1,15 @@
-// Set up canvas and WebGL context
-const canvas = document.getElementById('canvas');
-const gl = canvas.getContext('webgl') || canvas.getContext('experimental-webgl');
-const playPauseIndicator = document.getElementById('play-pause-indicator');
-
-if (!gl) {
-    alert('WebGL not supported in your browser');
-}
-
-// Set canvas size
-function resizeCanvas() {
-    const maxSize = 800;
-    canvas.width = Math.min(window.innerWidth, maxSize);
-    canvas.height = Math.min(window.innerHeight, maxSize);
-    gl.viewport(0, 0, canvas.width, canvas.height);
-}
-
-resizeCanvas();
-window.addEventListener('resize', resizeCanvas);
-
 // Store all controllers for updating later
 let guiControllers = {};
+let defaultPreset = "Magic";
 
 // Default parameters
 const params = {
     // Animation Settings
     speed: 2.2,
     iterations: 13,
+    backgroundColor: "#000000",
     // Presets
-    preset: 'Liquid',
+    preset: defaultPreset,
     // Pattern Settings
     scale: 0.05,
     dotFactor: 0.1,
@@ -78,6 +60,14 @@ function initGui() {
     // Animation controls
     guiControllers.speed = animationFolder.add(params, 'speed', 0.1, 2.0).name('Speed');
     guiControllers.iterations = animationFolder.add(params, 'iterations', 3, 24).step(1).name('Iterations');
+    guiControllers.backgroundColor = animationFolder.addColor(params, 'backgroundColor').name('Background Color')
+    .onChange(function() {
+        // This will trigger an immediate update when background color changes
+        //const bgColor = hexToRgb(params.backgroundColor);
+        //gl.clearColor(bgColor.r / 255, bgColor.g / 255, bgColor.b / 255, 1.0);
+        //gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
+        //canvas.style.backgroundColor = params.backgroundColor;
+    });
     animationFolder.add(params, 'randomizeInputs').name('Randomize Inputs (r)');
     animationFolder.add(params, 'saveImage').name('Save Image (s)');
     animationFolder.add(params, 'exportVideo').name('Record Video (v)');
