@@ -61,7 +61,7 @@ vec4 liquidMetalEffect(vec4 color, float edge, float time) {
     );
     
     // Add a subtle ripple effect
-    float ripple = sin(edge * 15.0 + time) * 0.05;
+    float ripple = sin(edge * 15.0 + time) * 0.00;
     metallic.rgb += ripple;
     
     return clamp(metallic, 0.0, 1.0);
@@ -147,7 +147,7 @@ void main() {
         vec2 offset = cos(v.yx*idx+vec2(0.0,idx)+time)/idx+u_vOffset;
         if (logoAlpha > 0.1 && edge > 0.1) {
             // Deflect flow around logo edges
-            offset *= 1.0 + edge * 2.0;
+            offset *= 1.0 + edge * 4.0;
         }
         
         v += offset;
@@ -169,7 +169,7 @@ void main() {
     
     // Add film grain
     vec2 noiseCoord = FC / 1.5;
-    float noise = random(noiseCoord + time * 0.001) * 0.12 - 0.075;
+    float noise = random(noiseCoord + time * 0.0004) * 0.12 - 0.075;
     o = o + vec4(noise);
     
     // Apply liquid metal effect
@@ -186,8 +186,8 @@ void main() {
             vec4 finalColor = mix(o, vec4(o.rgb * 0.8 + 0.2, logoAlpha), 0.3);
             
             // Apply metallic highlights along edges
-            float highlight = pow(edge * 1.2, 2.0) * (0.5 + 0.5 * sin(time * 2.0));
-            finalColor.rgb += highlight * vec3(0.6, 0.6, 0.8);
+            float highlight = pow(edge * 1.2, 2.0);
+            finalColor.rgb += highlight * vec3(0.6, 0.7, 0.8);
             
             gl_FragColor = finalColor;
         } else {
