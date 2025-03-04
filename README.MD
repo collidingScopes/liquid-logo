@@ -1,9 +1,9 @@
 # Liquid Logo
 
+A free, open-source tool for creating animated logos using a liquid metal aesthetic. Transform static logos and images into flowing animations.
+
 ![Liquid Logo](assets/siteOGImage4.png)
 ![Liquid Logo gif](assets/playstation.gif)
-
-A free, open-source tool for creating animated logos using a liquid metal aesthetic. Transform static logos and images into flowing animations.
 
 ## Live Demo
 
@@ -18,9 +18,9 @@ Try it in real-time in the browser: [Liquid Logo Tool](https://collidingscopes.g
 
 ## How It Works
 
-This tool leverages WebGL shaders to create real-time animations that interact with the edges of your logo. It uses edge detection to create flowing patterns that follow the contours of your image, giving a liquid metal aesthetic.
+This tool leverages WebGL shaders to create real-time animations that interact with the edges of your logo. It creates flowing patterns that follow the contours of your image, giving a liquid metal aesthetic.
 
-The animation is powered by a custom fragment shader that:
+The animation is powered by a fragment shader that:
 1. Detects the edges of your logo
 2. Generates a vector field around these edges
 3. Applies fluid dynamics and noise to create the flowing effect
