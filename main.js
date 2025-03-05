@@ -274,10 +274,16 @@ function handleImageUpload(event) {
             };
             reader.readAsDataURL(file);
         });
+
+    canvas.scrollIntoView({ 
+        behavior: 'smooth',
+        block: 'start'
+    });
 }
 
 // Function to load demo logos
 function loadDemoLogo(logoName) {
+    console.log("Load new demo logo: "+logoName);
     const logoPath = `assets/${logoName}.png`;
     
     // Load the selected demo logo
@@ -286,12 +292,18 @@ function loadDemoLogo(logoName) {
         // Resize and create texture in one step
         resizeAndCreateLogoTexture(tempImage);
     };
+
+    canvas.scrollIntoView({ 
+        behavior: 'smooth',
+        block: 'start'
+    });
     
     tempImage.onerror = function() {
         console.error(`Failed to load demo logo: ${logoPath}`);
     };
     
     tempImage.src = logoPath;
+
 }
 
 // Save function for exporting image with logo
