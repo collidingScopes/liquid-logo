@@ -33,7 +33,7 @@ var videofps = 30;
 let bitrate = 16_000_000;
 
 function saveImage() {
-  console.log("Export png image");
+  console.log("Export png image with transparency");
 
   // Create a temporary canvas with the same dimensions
   const tempCanvas = document.createElement('canvas');
@@ -41,22 +41,17 @@ function saveImage() {
   tempCanvas.height = canvas.height;
   const tempContext = tempCanvas.getContext('2d', {
       willReadFrequently: true,
-      alpha: false  // Disable alpha to ensure solid background
+      alpha: true  // Enable alpha for transparency
   });
 
-  // First, fill the temporary canvas with the current background color
-  //const [r, g, b] = WebGLUtils.hexToRGB(CONFIG.backgroundColor);
-  //tempContext.fillStyle = `rgb(${Math.round(r * 255)}, ${Math.round(g * 255)}, ${Math.round(b * 255)})`;
-  tempContext.fillStyle = "#000000"; 
-  tempContext.fillRect(0, 0, canvas.width, canvas.height);
-
-  // Draw the WebGL canvas on top
-  tempContext.globalCompositeOperation = 'source-over';
-  //drawScene(currentTime);
-  drawScene();
+  // Skip filling the background, leaving it transparent
+  
   // Force a render frame to ensure latest content
+  drawScene();
   gl.flush();
   gl.finish();
+  
+  // Draw the WebGL canvas onto the temporary canvas
   tempContext.drawImage(canvas, 0, 0);
 
   // Create download link

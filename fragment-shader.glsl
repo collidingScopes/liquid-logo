@@ -296,7 +296,7 @@ void main() {
             // Apply metallic highlights along edges
             float highlight = pow(edge * 1.2, 4.0);
             finalColor.rgb += highlight * vec3(0.6, 0.7, 0.8);
-            
+            finalColor.a = min(finalColor.a + 0.4, 1.0); //increase alpha for all pixels
             gl_FragColor = finalColor;
         } else {
             // Outside logo shape - transparent
