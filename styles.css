@@ -46,7 +46,7 @@ html, body{
   /* border: 1px solid gray; */
   /* background: rgb(0, 0, 0); */
   box-shadow: 0 0 10px rgba(255, 255, 255, 0.3);
-  width: min(85vw, 1000px);
+  width: min(85vw, 700px);
   /* max-width: 1000px; */
   /* max-height: calc(100vh - 80px); */
 }

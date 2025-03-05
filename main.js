@@ -1,9 +1,8 @@
 /*
 To do:
 Add GUI toggle for canvas background color
-Ability to export with transparent background?
+Ability to export images and or video with transparent background?
 Additional noise / distortion styles or parameters
-Can the input image be adjusted automatically to be square dimension (add transparent background at the edges to make it square?)
 Fix edge pixelation / aliasing?
 */
 
