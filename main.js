@@ -4,6 +4,7 @@ Add GUI toggle for canvas background color
 Ability to export with transparent background?
 Additional noise / distortion styles or parameters
 Can the input image be adjusted automatically to be square dimension (add transparent background at the edges to make it square?)
+Fix edge pixelation / aliasing?
 */
 
 // Global variables for WebGL
@@ -15,7 +16,7 @@ let logoAspectRatio = 1.0;
 let gui;
 
 //const MAX_DIMENSION = Math.min(1200, window.innerWidth);
-const MAX_DIMENSION = 1200;
+const MAX_DIMENSION = 1024;
 
 // Animation state
 let animationFrameId;
@@ -53,42 +54,56 @@ function resizeAndCreateLogoTexture(originalImage) {
     console.log(`Original image: ${originalWidth}x${originalHeight}, aspect ratio: ${originalAspect}`);
         
     // Calculate target dimensions while preserving aspect ratio exactly
-    let targetWidth, targetHeight;
+    let imageTargetWidth, imageTargetHeight;
     
     if (originalWidth >= originalHeight) {
         // Landscape orientation (width >= height)
-        targetWidth = Math.min(originalWidth, MAX_DIMENSION);
-        targetHeight = Math.round(targetWidth / originalAspect);
+        imageTargetWidth = Math.min(originalWidth, MAX_DIMENSION);
+        imageTargetHeight = Math.round(imageTargetWidth / originalAspect);
     } else {
         // Portrait orientation (height > width)
-        targetHeight = Math.min(originalHeight, MAX_DIMENSION);
-        targetWidth = Math.round(targetHeight * originalAspect);
+        imageTargetHeight = Math.min(originalHeight, MAX_DIMENSION);
+        imageTargetWidth = Math.round(imageTargetHeight * originalAspect);
     }
 
     // Adjust dimensions to be divisible by 4
-    targetWidth = Math.floor(targetWidth / 4) * 4;
-    targetHeight = Math.floor(targetHeight / 4) * 4;
+    imageTargetWidth = Math.floor(imageTargetWidth / 4) * 4;
+    imageTargetHeight = Math.floor(imageTargetHeight / 4) * 4;
     
     // Make sure we have at least 4x4 pixels
-    targetWidth = Math.max(targetWidth, 4);
-    targetHeight = Math.max(targetHeight, 4);
+    imageTargetWidth = Math.max(imageTargetWidth, 4);
+    imageTargetHeight = Math.max(imageTargetHeight, 4);
     
-    console.log(`Target dimensions: ${targetWidth}x${targetHeight}, resulting aspect: ${targetWidth/targetHeight}`);
+    // Determine the square canvas size (use the larger dimension)
+    const squareSize = Math.max(imageTargetWidth, imageTargetHeight);
     
-    // Set canvas size to exactly match these dimensions
-    canvas.width = targetWidth;
-    canvas.height = targetHeight;
-    gl.viewport(0, 0, targetWidth, targetHeight);
+    // Ensure square size is divisible by 4
+    const adjustedSquareSize = Math.ceil(squareSize / 4) * 4;
+    
+    // Calculate centering offsets to position the image in the middle of the square canvas
+    const offsetX = Math.floor((adjustedSquareSize - imageTargetWidth) / 2);
+    const offsetY = Math.floor((adjustedSquareSize - imageTargetHeight) / 2);
+    
+    console.log(`Image target dimensions: ${imageTargetWidth}x${imageTargetHeight}`);
+    console.log(`Square canvas size: ${adjustedSquareSize}x${adjustedSquareSize}`);
+    console.log(`Centering offsets: X=${offsetX}, Y=${offsetY}`);
+    
+    // Set canvas size to square dimensions
+    canvas.width = adjustedSquareSize;
+    canvas.height = adjustedSquareSize;
+    gl.viewport(0, 0, adjustedSquareSize, adjustedSquareSize);
     
     // Create a temporary canvas for resizing
     const tempCanvas = document.createElement('canvas');
     const ctx = tempCanvas.getContext('2d');
-    tempCanvas.width = targetWidth;
-    tempCanvas.height = targetHeight;
+    tempCanvas.width = adjustedSquareSize;
+    tempCanvas.height = adjustedSquareSize;
     
-    // Clear and draw image at exact dimensions
-    ctx.clearRect(0, 0, targetWidth, targetHeight);
-    ctx.drawImage(originalImage, 0, 0, targetWidth, targetHeight);
+    // Set transparent background
+    ctx.clearRect(0, 0, adjustedSquareSize, adjustedSquareSize);
+    
+    // Draw image centered in the square canvas
+    ctx.drawImage(originalImage, offsetX, offsetY, imageTargetWidth, imageTargetHeight);
     
     // Create WebGL texture
     if (!gl) return;
@@ -110,7 +125,6 @@ function resizeAndCreateLogoTexture(originalImage) {
     
     // Upload the canvas content to the texture
     gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, tempCanvas);
-    
 }
 
 // Initialize the application
