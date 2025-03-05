@@ -84,7 +84,7 @@ function initGui() {
 
     // Add logo parameters to GUI
     guiControllers.logoScale = logoFolder.add(params, 'logoScale', 0.5, 3.0).name('Logo Scale');
-    guiControllers.logoInteractStrength = logoFolder.add(params, 'logoInteractStrength', 0.1, 0.7).step(0.01).name('Edge Interaction');
+    guiControllers.logoInteractStrength = logoFolder.add(params, 'logoInteractStrength', 0.1, 0.5).step(0.01).name('Edge Interaction');
     logoFolder.open();
 
     return gui;
@@ -145,7 +145,7 @@ function togglePlayPause() {
 function randomizeInputs() {
     // Animation parameters
     params.speed = Math.random() * 0.5 + 0.3;
-    params.iterations = Math.ceil(Math.random() * 8 + 4); // 4 to 16
+    params.iterations = Math.ceil(Math.random() * 8 + 4);
 
     // Pattern parameters
     params.scale = Math.random() * 3.9 + 0.1;
@@ -162,7 +162,7 @@ function randomizeInputs() {
     params.blueFactor = Math.random() * 4.0 - 2.0; // -2.0 to 2.0
     params.colorShift = Math.random(); // 0.0 to 1.0
 
-    params.logoInteractStrength = 0.3 + Math.random()*0.4; // 0.0 to 1.0
+    params.logoInteractStrength = 0.1 + Math.random()*0.4;
     params.logoOpacity = 1.0;
 
     // Update all UI controllers

@@ -32,8 +32,10 @@ const gl = canvas.getContext('webgl', {
     depth: false,
     stencil: false,
     preserveDrawingBuffer: true,
-    // premultipliedAlpha: false,
-    powerPreference: "high-performance"
+    premultipliedAlpha: false,
+    powerPreference: "high-performance",
+    imageSmoothingEnabled: true,
+    imageSmoothingQuality: 'high',
 });
 
 if (!gl) {
@@ -94,7 +96,11 @@ function resizeAndCreateLogoTexture(originalImage) {
     
     // Create a temporary canvas for resizing
     const tempCanvas = document.createElement('canvas');
-    const ctx = tempCanvas.getContext('2d');
+    const ctx = tempCanvas.getContext('2d', {
+        alpha: true,
+        imageSmoothingEnabled: true,
+        imageSmoothingQuality: 'high'
+    });
     tempCanvas.width = adjustedSquareSize;
     tempCanvas.height = adjustedSquareSize;
     
