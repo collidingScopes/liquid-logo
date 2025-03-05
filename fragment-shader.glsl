@@ -233,7 +233,7 @@ void main() {
     l.x += abs(u_dotFactor-dotP) * u_dotMultiplier;
     
     // Modify pattern based on logo edges
-    float edgeInfluence = edge * 5.0;
+    float edgeInfluence = edge * 20.0;
     vec2 v = p*(1.0-l.x)/u_scale;
     
     // Apply edge interaction to vector field
@@ -294,7 +294,7 @@ void main() {
             vec4 finalColor = mix(o, vec4(o.rgb * 0.8 + 0.2, logoAlpha), 0.3);
             
             // Apply metallic highlights along edges
-            float highlight = pow(edge * 1.2, 2.0);
+            float highlight = pow(edge * 1.2, 4.0);
             finalColor.rgb += highlight * vec3(0.6, 0.7, 0.8);
             
             gl_FragColor = finalColor;
