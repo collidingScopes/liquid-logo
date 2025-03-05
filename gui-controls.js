@@ -70,8 +70,8 @@ function initGui() {
     guiControllers.dotFactor = animationFolder.add(params, 'dotFactor', 0.1, 1.2).name('Dot Factor');
     guiControllers.dotMultiplier = animationFolder.add(params, 'dotMultiplier', 0.0, 2.0).name('Dot Multiplier');
     guiControllers.vOffset = animationFolder.add(params, 'vOffset', 0.0, 10.0).step(0.1).name('Pattern Offset');
-    guiControllers.intensityFactor = animationFolder.add(params, 'intensityFactor', 0.05, 1.0).name('Intensity');
-    guiControllers.expFactor = animationFolder.add(params, 'expFactor', 0.1, 10.0).name('Exp Factor');
+    guiControllers.intensityFactor = animationFolder.add(params, 'intensityFactor', 0.05, 0.5).name('Intensity');
+    guiControllers.expFactor = animationFolder.add(params, 'expFactor', 0.1, 5.0).name('Exp Factor');
 
     animationFolder.open();
 
@@ -145,15 +145,15 @@ function togglePlayPause() {
 function randomizeInputs() {
     // Animation parameters
     params.speed = Math.random() * 0.5 + 0.3;
-    params.iterations = Math.ceil(Math.random() * 12 + 4); // 4 to 16
+    params.iterations = Math.ceil(Math.random() * 8 + 4); // 4 to 16
 
     // Pattern parameters
     params.scale = Math.random() * 3.9 + 0.1;
     params.dotFactor = Math.random() * 1.0;
     params.dotMultiplier = Math.random() * 1.0;
     params.vOffset = Math.random() * 10.0;
-    params.intensityFactor = Math.random() * 1.0;
-    params.expFactor = Math.random() * 10.0;
+    params.intensityFactor = Math.random() * 0.5;
+    params.expFactor = Math.random() * 5.0;
     params.noiseIntensity = Math.random() * 10.0;
 
     // Color parameters

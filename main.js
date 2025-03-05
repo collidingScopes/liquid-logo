@@ -3,6 +3,7 @@ To do:
 Add GUI toggle for canvas background color
 Ability to export with transparent background?
 Additional noise / distortion styles or parameters
+Can the input image be adjusted automatically to be square dimension (add transparent background at the edges to make it square?)
 */
 
 // Global variables for WebGL
@@ -180,18 +181,18 @@ function drawScene() {
         currentTime = Date.now() - startTime;
     }
 
-    // Set background color to solid black
-    //gl.clearColor(0.0, 0.0, 0.0, 1.0);
-    //gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
-
-    //bgColor = hexToRgb(params.backgroundColor);
-    //gl.clearColor(bgColor.r / 255, bgColor.g / 255, bgColor.b / 255, 1.0);
-    //gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
+    // Clear the canvas with transparency
+    gl.clearColor(0.0, 0.0, 0.0, 0.0);
+    gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
 
     // Always ensure viewport matches canvas size
     gl.viewport(0, 0, canvas.width, canvas.height);
 
-    // Ensure we're drawing on the full canvas by setting a black quad first
+    // Set up blending for transparent backgrounds
+    gl.enable(gl.BLEND);
+    gl.blendFunc(gl.SRC_ALPHA, gl.ONE_MINUS_SRC_ALPHA);
+
+    // Use the shader program
     gl.useProgram(programInfo.program);
     gl.bindBuffer(gl.ARRAY_BUFFER, positionBuffer);
     gl.vertexAttribPointer(
