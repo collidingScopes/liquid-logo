@@ -15,7 +15,7 @@ let logoAspectRatio = 1.0;
 let gui;
 
 //const MAX_DIMENSION = Math.min(1200, window.innerWidth);
-const MAX_DIMENSION = 1024;
+const MAX_DIMENSION = 1500;
 
 // Animation state
 let animationFrameId;

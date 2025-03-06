@@ -149,6 +149,6 @@ const presets = {
         greenFactor: -0.3,
         blueFactor: 1.6,
         colorShift: 0.1,
-        logoInteractStrength: 0.32,
+        logoInteractStrength: 0.1,
     },
 };
