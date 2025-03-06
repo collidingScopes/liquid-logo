@@ -295,9 +295,10 @@ function handleImageUpload(event) {
             reader.readAsDataURL(file);
         });
 
-    canvas.scrollIntoView({ 
-        behavior: 'smooth',
-        block: 'start'
+    console.log("scroll to top");
+    window.scrollTo({
+        top: 0,
+        behavior: 'smooth'
     });
 }
 
@@ -313,9 +314,10 @@ function loadDemoLogo(logoName) {
         resizeAndCreateLogoTexture(tempImage);
     };
 
-    canvas.scrollIntoView({ 
-        behavior: 'smooth',
-        block: 'start'
+    console.log("scroll to top");
+    window.scrollTo({
+        top: 0,
+        behavior: 'smooth'
     });
     
     tempImage.onerror = function() {
